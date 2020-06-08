@@ -27,6 +27,11 @@ namespace Server
             {
                 listBox1.Items.Add(pdt.server.info.Dequeue());
             }
+
+            while (pdt.client.info.Count != 0)
+            {
+                listBox2.Items.Add(pdt.client.info.Dequeue());
+            }
         }
 
         private void SStart_Click(object sender, EventArgs e)
@@ -37,8 +42,19 @@ namespace Server
         }
 
         private void Conn_Click(object sender, EventArgs e)
-        {
+        {           
             pdt.client.Connect(Sip.Text,int.Parse(Sport.Text));
+            Cip.Text = pdt.client.IpEndPort;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            pdt.client.Send("客户端发送一个消息");
+        }
+
+        private void Ssend_Click(object sender, EventArgs e)
+        {
+            pdt.server.Send(Cip.Text,"服务器发送一个消息");
         }
     }
 }

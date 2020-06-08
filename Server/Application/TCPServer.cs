@@ -62,7 +62,8 @@ namespace Server
         //接收
         public abstract void Receiving(object obj);
         //发送信息
-        public abstract void Send(string msg, Socket socket);
+        public abstract void Send(string ipaddress,string msg);
+        //服务器退出
 
     }
 
@@ -102,9 +103,9 @@ namespace Server
 
         public override void Listenning(object obj)
         {
-            clientSocket = serverSocket.Accept();
-            while (clientSocket != null)
+            while (true)
             {
+                clientSocket = serverSocket.Accept();
                 string ipadreess = clientSocket.RemoteEndPoint.ToString();
                 clientsDictionary.Add(ipadreess, clientSocket);
                 info.Enqueue(ipadreess + "已连接");
@@ -112,53 +113,52 @@ namespace Server
                 //开启接收线程
                 Thread thread = new Thread(new ParameterizedThreadStart(Receiving));
                 thread.Start(clientSocket);
-
-                break;
             }
         }
 
         public override void Receiving(object obj)
         {
-            int length = 0;
-            byte[] revBuffer = new byte[512];
-            Socket socket = (Socket)obj;
-            try
+            while (true)
             {
-                //Recive函数会阻塞,直到收到信息为止
-                length = socket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
-            }
-            catch (Exception ex)
-            {
+                int length = 0;
+                byte[] revBuffer = new byte[512];
+                Socket socket = (Socket)obj;
+                string ipadreess = clientSocket.RemoteEndPoint.ToString();
+                try
+                {
+                    //Recive函数会阻塞,直到收到信息为止
+                    length = socket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                }
+                catch (Exception ex)
+                {
+                    info.Enqueue(ipadreess + "异常退出");
+                    clientsDictionary.Remove(ipadreess);
+                    return;
+                }
 
-            }
+                if (length == 0)
+                {
+                    info.Enqueue(ipadreess + "正常退出");
+                    clientsDictionary.Remove(ipadreess);
+                    return;
+                }
 
-            if (length == 0)
-            {
-                //客户端正常退出
-            }
+                else if (length == -1)
+                {
+                    info.Enqueue(ipadreess + "异常退出");
+                    return;
+                }
 
-            else if (length == -1)
-            {
-                //客户端异常退出
-            }
-
-            else
-            {
-                info.Enqueue(Encoding.Default.GetString(revBuffer, 0, length));
+                else
+                {
+                    info.Enqueue(Encoding.Default.GetString(revBuffer, 0, length));
+                }
             }
         }
 
-        public override void Send(string msg, Socket socket)
+        public override void Send(string ipaddress, string msg)
         {
-            try
-            {
-                byte[] sendBuffer = Encoding.Default.GetBytes(msg);
-                socket.Send(sendBuffer, sendBuffer.Length, SocketFlags.None);
-            }
-            catch (Exception ex)
-            {
-
-            }
+            clientsDictionary[ipaddress].Send(Encoding.Default.GetBytes(msg));
         }
     }
 
@@ -166,12 +166,27 @@ namespace Server
 
     public abstract class TCPClient
     {
-        public TcpClient tcpClient;
+        //客户端套接字
+        public Socket tcpClient;
+        //接收
+        public Thread revThread;
+        //信息
+        public Queue<string> info;
+        //地址端口号
+        public string IpEndPort;
+
+        public TCPClient()
+        {
+            info = new Queue<string>();
+            tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+        }
 
         //连接服务器
         public abstract void Connect(string ip,int port);
         //接受
+        public abstract void Reciving(object obj);
         //发送
+        public abstract void Send(string msg);
     }
 
     #endregion
@@ -184,18 +199,66 @@ namespace Server
         public override void Connect(string ip, int port)
         {
             IPAddress this_ip = IPAddress.Parse(ip);
-            if (tcpClient != null &&tcpClient.Connected)
+
+            if (tcpClient != null && tcpClient.Connected)
             {
+                MessageBox.Show("已存在,断开连接，请重新连接");
                 tcpClient.Close();
+                tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 return;
             }
+
             try
             {
-                tcpClient = new TcpClient(ip, port);
+                tcpClient.Connect(this_ip,port);
+                IpEndPort = tcpClient.RemoteEndPoint.ToString();
+                revThread = new Thread(new ParameterizedThreadStart(Reciving));
+                revThread.Start();
             }
             catch (Exception ex)
             {
+                MessageBox.Show("连接失败");
+            }
+        }
 
+        public override void Send(string msg)
+        {
+            tcpClient.Send(Encoding.Default.GetBytes(msg));
+        }
+
+        public override void Reciving(object obj)
+        {
+            while (true)
+            {
+                int length = 0;
+                byte[] revBuffer = new byte[512];
+                try
+                {
+                    //Recive函数会阻塞,直到收到信息为止
+                    length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                }
+                catch (Exception ex)
+                {
+                    info.Enqueue("服务器异常退出");
+                    return;
+                }
+
+                if (length == 0)
+                {
+                    info.Enqueue("服务器正常退出");
+                    return;
+                }
+
+                else if (length == -1)
+                {
+                    info.Enqueue("服务器异常退出");
+                    return;
+                }
+
+                else
+                {
+                    info.Enqueue(Encoding.Default.GetString(revBuffer, 0, length));
+                }
             }
         }
     }

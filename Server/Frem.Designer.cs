@@ -38,12 +38,16 @@
             this.Sport = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Conn = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.Cip = new System.Windows.Forms.TextBox();
+            this.Ssend = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.Ssend);
             this.groupBox1.Controls.Add(this.Sport);
             this.groupBox1.Controls.Add(this.Sip);
             this.groupBox1.Controls.Add(this.SStart);
@@ -57,6 +61,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.Cip);
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.Conn);
             this.groupBox2.Controls.Add(this.listBox2);
             this.groupBox2.Location = new System.Drawing.Point(433, 12);
@@ -122,6 +128,33 @@
             this.Conn.UseVisualStyleBackColor = true;
             this.Conn.Click += new System.EventHandler(this.Conn_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(257, 264);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "发送";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // Cip
+            // 
+            this.Cip.Location = new System.Drawing.Point(29, 42);
+            this.Cip.Name = "Cip";
+            this.Cip.Size = new System.Drawing.Size(100, 21);
+            this.Cip.TabIndex = 4;
+            // 
+            // Ssend
+            // 
+            this.Ssend.Location = new System.Drawing.Point(320, 264);
+            this.Ssend.Name = "Ssend";
+            this.Ssend.Size = new System.Drawing.Size(75, 23);
+            this.Ssend.TabIndex = 6;
+            this.Ssend.Text = "发送";
+            this.Ssend.UseVisualStyleBackColor = true;
+            this.Ssend.Click += new System.EventHandler(this.Ssend_Click);
+            // 
             // Frem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -134,6 +167,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -149,6 +183,9 @@
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button Conn;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox Cip;
+        private System.Windows.Forms.Button Ssend;
     }
 }
 
