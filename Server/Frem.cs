@@ -54,7 +54,7 @@ namespace Server
 
         private void Ssend_Click(object sender, EventArgs e)
         {
-            pdt.server.Send(Cip.Text,"服务器发送一个消息");
+            pdt.server.SendMsg(Cip.Text,"服务器发送一个消息");
         }
     }
 }

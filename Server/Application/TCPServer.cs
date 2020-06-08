@@ -62,9 +62,9 @@ namespace Server
         //接收
         public abstract void Receiving(object obj);
         //发送信息
-        public abstract void Send(string ipaddress,string msg);
-        //服务器退出
-
+        public abstract void SendMsg(string ipaddress,string msg);
+        //发送文件
+        public abstract void SendFile(string ipaddress);
     }
 
     #endregion
@@ -76,8 +76,13 @@ namespace Server
     {
         public override void ServerSetting(string ipaddress, int point, int MaxListener)
         {
-            if (serverSocket !=null && serverSocket.Connected)
+            if (serverSocket != null && serverSocket.Connected)
+            {
+                MessageBox.Show("服务器已打开");
+                serverSocket.Close();
+                serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 return;
+            }
             try
             {
                 //配置Socket
@@ -105,7 +110,7 @@ namespace Server
         {
             while (true)
             {
-                clientSocket = serverSocket.Accept();
+                 clientSocket = serverSocket.Accept();
                 string ipadreess = clientSocket.RemoteEndPoint.ToString();
                 clientsDictionary.Add(ipadreess, clientSocket);
                 info.Enqueue(ipadreess + "已连接");
@@ -156,9 +161,15 @@ namespace Server
             }
         }
 
-        public override void Send(string ipaddress, string msg)
+        public override void SendMsg(string ipaddress, string msg)
         {
             clientsDictionary[ipaddress].Send(Encoding.Default.GetBytes(msg));
+        }
+
+        public override void SendFile(string ipaddress)
+        {
+            //打开选择文件
+            //传输到对应的客户端
         }
     }
 
