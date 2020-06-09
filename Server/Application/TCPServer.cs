@@ -8,14 +8,16 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using System.Data;
 using Template;
+using System.ComponentModel;
 
 namespace Server
 {
     #region 服务端抽象类
 
     public abstract class TCPServer
-    {
+    {     
         //服务端套接字
         public Socket serverSocket;
         //客户端套接字集合
@@ -32,13 +34,18 @@ namespace Server
         public string localIP = null;
         //本地端口
         public int localPort;
+        //Listview
+        public ListView listview;
+        //委托
+        public delegate void Action(ListView listveiw ,string data);
 
-
-        public TCPServer()
+        public TCPServer(ListView listview)
         {            
             GetIPandPort();
+            this.listview = listview;
             clientsDictionary = new Dictionary<string, Socket>();
             info = new Queue<string>();
+            Action action = new Action(ListviewOper.Add);
         }
 
         //获取本地ip/port
@@ -51,7 +58,7 @@ namespace Server
                 {
                     AddressIP = _IPAddress.ToString();
                 }
-            }
+            }           
             localIP = AddressIP;
 
             localPort = 5000;
@@ -76,6 +83,11 @@ namespace Server
     /// </summary>
     public class TestService : TCPServer
     {
+        public TestService(ListView listview) : base(listview)
+        {
+
+        }
+
         public override void ServerSetting(string ipaddress, int point, int MaxListener)
         {
             if (serverSocket != null && serverSocket.Connected)
@@ -112,11 +124,11 @@ namespace Server
         {
             while (true)
             {
-                 clientSocket = serverSocket.Accept();
+                clientSocket = serverSocket.Accept();
                 string ipadreess = clientSocket.RemoteEndPoint.ToString();
                 clientsDictionary.Add(ipadreess, clientSocket);
                 info.Enqueue(ipadreess + "已连接");
-
+                ListviewOper.Add(this.listview, ipadreess);
                 //开启接收线程
                 Thread thread = new Thread(new ParameterizedThreadStart(Receiving));
                 thread.Start(clientSocket);
@@ -138,7 +150,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    info.Enqueue(ipadreess + "异常退出");
+                    info.Enqueue(ex.Message+ ipadreess + "异常退出");
                     clientsDictionary.Remove(ipadreess);
                     return;
                 }

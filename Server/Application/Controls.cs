@@ -173,7 +173,7 @@ namespace Template
         public MyTabcontrol myTabcontrol;
         public MyListview myListview;
         public MyTabPage myTabPage;
-
+        public TabControl tabControl;
         public ControlFactory()
         {
             myTabcontrol = new MyTabcontrol();
@@ -185,6 +185,11 @@ namespace Template
 
     class ServerFactory: ControlFactory
     {
+        public ServerFactory():base()
+        {
+            tabControl = GetTab();
+        }
+
         public override TabControl GetTab()
         {
             myListview = new ServerDevice();

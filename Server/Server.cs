@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Template;
+
 namespace Server
 {
     public partial class Server : Form
@@ -17,7 +18,7 @@ namespace Server
         public Server()
         {
             pdt = new Product();
-            tabControl = pdt.factor.GetTab();
+            tabControl = pdt.factor.tabControl;
             InitializeComponent();
             this.Controls.Add(tabControl);
         }
@@ -51,6 +52,12 @@ namespace Server
                 ProductName.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[0].Text;
                 SoftVersion.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[1].Text;
             }
+        }
+
+        private void TestWindow_Click(object sender, EventArgs e)
+        {
+            Form form = new Frem();
+            form.Show();
         }
     }
 }

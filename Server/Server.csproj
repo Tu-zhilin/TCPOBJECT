@@ -54,6 +54,7 @@
     <Compile Include="Frem.Designer.cs">
       <DependentUpon>Frem.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListviewOper.cs" />
     <Compile Include="Prduct.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

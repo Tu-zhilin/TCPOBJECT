@@ -18,7 +18,7 @@ namespace Server
         public Product()
         {
             factor = new ServerFactory();
-            server = new TestService();
+            server = new TestService(factor.myTabPage.dictionary["Device"]);
             client = new TestClient();
         }
     }

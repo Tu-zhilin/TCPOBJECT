@@ -47,6 +47,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.ClientSoftVer = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.TestWindow = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -55,7 +56,7 @@
             // 
             // SendText
             // 
-            this.SendText.Location = new System.Drawing.Point(17, 66);
+            this.SendText.Location = new System.Drawing.Point(17, 33);
             this.SendText.Name = "SendText";
             this.SendText.Size = new System.Drawing.Size(75, 23);
             this.SendText.TabIndex = 0;
@@ -64,7 +65,7 @@
             // 
             // SendFile
             // 
-            this.SendFile.Location = new System.Drawing.Point(135, 66);
+            this.SendFile.Location = new System.Drawing.Point(135, 33);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
             this.SendFile.TabIndex = 1;
@@ -185,6 +186,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.TestWindow);
             this.groupBox3.Controls.Add(this.SendFile);
             this.groupBox3.Controls.Add(this.SendText);
             this.groupBox3.Location = new System.Drawing.Point(873, 385);
@@ -225,6 +227,16 @@
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 7;
             this.label5.Text = "软件版本";
+            // 
+            // TestWindow
+            // 
+            this.TestWindow.Location = new System.Drawing.Point(135, 87);
+            this.TestWindow.Name = "TestWindow";
+            this.TestWindow.Size = new System.Drawing.Size(75, 23);
+            this.TestWindow.TabIndex = 2;
+            this.TestWindow.Text = "测试窗口";
+            this.TestWindow.UseVisualStyleBackColor = true;
+            this.TestWindow.Click += new System.EventHandler(this.TestWindow_Click);
             // 
             // Server
             // 
@@ -269,5 +281,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox ClientPdtType;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button TestWindow;
     }
 }
