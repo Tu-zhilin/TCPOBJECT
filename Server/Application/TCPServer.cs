@@ -196,13 +196,13 @@ namespace Server
                 //拼接发送类型 头字节 文件名字 数据
 
                 byte[] dataFileName = Encoding.Default.GetBytes(fileName);
-                int dataHeadLen = dataFileName.Length + 3;
+                int dataHeadLen = dataFileName.Length + 2;
                 byte[] data = new byte[dataHeadLen + datalength];
                 byte[] type = Encoding.Default.GetBytes("F");
                 type.CopyTo(data,0);
                 data[1] = (byte)dataHeadLen;
-                data[2] = (byte)datalength;
-                dataFileName.CopyTo(data,3);
+                //data[2] = (byte)datalength;
+                dataFileName.CopyTo(data,2);
                 buffer.CopyTo(data, dataHeadLen);
                 //发送
                 len = clientsDictionary[ipaddress].Send(data);
@@ -293,7 +293,7 @@ namespace Server
             while (true)
             {
                 int length = 0;
-                byte[] revBuffer = new byte[30000000];
+                byte[] revBuffer = new byte[40000000];
                 try
                 {
                     //Recive函数会阻塞,直到收到信息为止
@@ -324,17 +324,13 @@ namespace Server
                         case "F":
                             {
 
-                                string pathName = Encoding.Default.GetString(revBuffer,3,revBuffer[1]-3);
+                                string pathName = Encoding.Default.GetString(revBuffer,2,revBuffer[1]-2);
                                 info.Enqueue(pathName);
                                 if (File.Exists(pathName))
                                     File.Delete(pathName);
                                 FileStream fswrite = new FileStream(pathName,FileMode.Append);
 
-                                //do
-                                //{
-                                    fswrite.Write(revBuffer, revBuffer[1], revBuffer[2]);
-                                //}
-                                //while ((length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None)) > 0);
+                                fswrite.Write(revBuffer, revBuffer[1], length - revBuffer[1]);
 
                                 fswrite.Close();
                             }
