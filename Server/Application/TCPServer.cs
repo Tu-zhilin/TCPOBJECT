@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Server
 {
@@ -163,13 +164,56 @@ namespace Server
 
         public override void SendMsg(string ipaddress, string msg)
         {
+            //发送文字
+            msg = "M" + msg;
             clientsDictionary[ipaddress].Send(Encoding.Default.GetBytes(msg));
         }
 
         public override void SendFile(string ipaddress)
         {
-            //打开选择文件
-            //传输到对应的客户端
+            string filePath = null;
+            string fileName = null;
+            OpenFileDialog openFile = new OpenFileDialog();
+            //选择文件
+            if (openFile.ShowDialog() == DialogResult.OK)
+            {
+                filePath = openFile.FileName;
+                fileName = openFile.SafeFileName;
+            }
+            //读取文件
+            try
+            {
+                FileStream fsRead = new FileStream(filePath, FileMode.Open);
+                int datalength = (int)fsRead.Length;
+                byte[] buffer = new byte[datalength];
+                int len = fsRead.Read(buffer, 0, datalength);
+                //确保读取全部字节
+                if (!(len == datalength))
+                {
+                    info.Enqueue("读取文件异常");
+                    return;
+                }
+                //拼接发送类型 头字节 文件名字 数据
+
+                byte[] dataFileName = Encoding.Default.GetBytes(fileName);
+                int dataHeadLen = dataFileName.Length + 3;
+                byte[] data = new byte[dataHeadLen + datalength];
+                byte[] type = Encoding.Default.GetBytes("F");
+                type.CopyTo(data,0);
+                data[1] = (byte)dataHeadLen;
+                data[2] = (byte)datalength;
+                dataFileName.CopyTo(data,3);
+                buffer.CopyTo(data, dataHeadLen);
+                //发送
+                len = clientsDictionary[ipaddress].Send(data);
+                info.Enqueue(string.Format("发送文件：返回值{0}", len));
+
+                fsRead.Close();
+            }
+            catch(Exception ex)
+            {
+                info.Enqueue(ex.Message);
+            }
         }
     }
 
@@ -237,12 +281,19 @@ namespace Server
             tcpClient.Send(Encoding.Default.GetBytes(msg));
         }
 
+        public string GetASCII(byte data)
+        {
+            byte[] newdata = new byte[1];
+            newdata[0] = (byte)(Convert.ToInt32(data));
+            return Encoding.ASCII.GetString(newdata);
+        }
+
         public override void Reciving(object obj)
         {
             while (true)
             {
                 int length = 0;
-                byte[] revBuffer = new byte[512];
+                byte[] revBuffer = new byte[30000000];
                 try
                 {
                     //Recive函数会阻塞,直到收到信息为止
@@ -254,21 +305,43 @@ namespace Server
                     return;
                 }
 
-                if (length == 0)
+                if (length == 0 || length == -1)
                 {
-                    info.Enqueue("服务器正常退出");
-                    return;
-                }
-
-                else if (length == -1)
-                {
-                    info.Enqueue("服务器异常退出");
+                    info.Enqueue(string.Format("服务器退出:返回值{0}",length));
                     return;
                 }
 
                 else
                 {
-                    info.Enqueue(Encoding.Default.GetString(revBuffer, 0, length));
+                    string str = GetASCII(revBuffer[0]);
+                    switch (str)
+                    {
+                        //Message
+                        case "M":
+                            info.Enqueue(Encoding.Default.GetString(revBuffer, 1, length));
+                            break;
+                        //File
+                        case "F":
+                            {
+
+                                string pathName = Encoding.Default.GetString(revBuffer,3,revBuffer[1]-3);
+                                info.Enqueue(pathName);
+                                if (File.Exists(pathName))
+                                    File.Delete(pathName);
+                                FileStream fswrite = new FileStream(pathName,FileMode.Append);
+
+                                //do
+                                //{
+                                    fswrite.Write(revBuffer, revBuffer[1], revBuffer[2]);
+                                //}
+                                //while ((length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None)) > 0);
+
+                                fswrite.Close();
+                            }
+                             
+                            break;
+                    }
+                    
                 }
             }
         }
