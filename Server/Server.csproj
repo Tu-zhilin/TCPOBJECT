@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\Controls.cs" />
     <Compile Include="Frem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +58,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\TCPServer.cs" />
+    <Compile Include="Server.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Server.Designer.cs">
+      <DependentUpon>Server.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Frem.resx">
       <DependentUpon>Frem.cs</DependentUpon>
     </EmbeddedResource>
@@ -70,6 +77,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Server.resx">
+      <DependentUpon>Server.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

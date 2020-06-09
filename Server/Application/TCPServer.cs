@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using Template;
 
 namespace Server
 {
@@ -194,14 +195,12 @@ namespace Server
                     return;
                 }
                 //拼接发送类型 头字节 文件名字 数据
-
                 byte[] dataFileName = Encoding.Default.GetBytes(fileName);
                 int dataHeadLen = dataFileName.Length + 2;
                 byte[] data = new byte[dataHeadLen + datalength];
                 byte[] type = Encoding.Default.GetBytes("F");
                 type.CopyTo(data,0);
                 data[1] = (byte)dataHeadLen;
-                //data[2] = (byte)datalength;
                 dataFileName.CopyTo(data,2);
                 buffer.CopyTo(data, dataHeadLen);
                 //发送
@@ -301,7 +300,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    info.Enqueue("服务器异常退出");
+                    info.Enqueue(ex.Message + "服务器异常退出");
                     return;
                 }
 
