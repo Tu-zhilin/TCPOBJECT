@@ -42,9 +42,12 @@ namespace Server
         }
 
         private void Conn_Click(object sender, EventArgs e)
-        {           
-            pdt.client.Connect(Sip.Text,int.Parse(Sport.Text));
-            Cip.Text = pdt.client.IpEndPort;
+        {
+            if (pdt.client.Connect(Sip.Text, int.Parse(Sport.Text)))
+            {
+                Cip.Text = pdt.client.IpEndPort;
+                pdt.client.SendPdtInfo("五菱CTF28E", "V1.1.1");
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

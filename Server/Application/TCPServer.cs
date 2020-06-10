@@ -81,6 +81,8 @@ namespace Server
         public abstract void SendMsg(string ipaddress,string msg);
         //发送文件
         public abstract void SendFile(string ipaddress);
+        //发送更新提示
+        public abstract void SendUpdataInfo(string ipaddress,string msg);
     }
 
     #endregion
@@ -184,14 +186,22 @@ namespace Server
                     string str = TypeChange.GetASCII(revBuffer[0]);
                     switch (str)
                     {
+                        //客户端的更新请求
+                        case "R":
+                            //TODO:发送响应的文件过去
+                            info.Enqueue("发送文件过去");
+                            break;
                         //接收软件信息
                         case "H":
                             {
-                                clientsDictionary[ipadreess].PdtName = Encoding.Default.GetString(revBuffer, 2, revBuffer[1] - 2);
-                                //info.Enqueue(clientsDictionary[ipadreess].PdtName);
-                                clientsDictionary[ipadreess].pdtVer = Encoding.Default.GetString(revBuffer, revBuffer[1], length);
-                                //info.Enqueue(clientsDictionary[ipadreess].pdtVer);
+                                //存储产品名和软件版本
+                                clientsDictionary[ipadreess].PdtName = Encoding.Default.GetString(revBuffer, 2, revBuffer[1] - 2);                          
+                                clientsDictionary[ipadreess].pdtVer = Encoding.Default.GetString(revBuffer, revBuffer[1], length);                      
+                                //添加进Listview
                                 ListviewOper.Change_Info(listview,ipadreess, clientsDictionary[ipadreess].PdtName, clientsDictionary[ipadreess].pdtVer);
+                                //进行比对版本
+                                //TODO：如果版本一致，回复无需更新，如果不一致，发送需要更新
+                                SendUpdataInfo(ipadreess, "有最新版本,是否更新");
                             }
                             break;
                         //Message
@@ -200,6 +210,19 @@ namespace Server
                             break;
                     }
                 }
+            }
+        }
+        //发送更新信息
+        public override void SendUpdataInfo(string ipaddress, string msg)
+        {
+            try
+            {
+                msg = "T" + msg;
+                clientsDictionary[ipaddress].clientSocket.Send(Encoding.Default.GetBytes(msg));
+            }
+            catch (Exception ex)
+            {
+                info.Enqueue(ex.Message);
             }
         }
         //发送文字
@@ -284,13 +307,15 @@ namespace Server
         }
 
         //连接服务器
-        public abstract void Connect(string ip,int port);
+        public abstract bool Connect(string ip,int port);
         //接受
         public abstract void Reciving(object obj);
         //发送文本
         public abstract void SendMsg(string msg);
         //发送软件信息,版本
         public abstract void SendPdtInfo(string pdtName,string Version);
+        //更新请求
+        public abstract void SendReq(string msg);
     }
 
     #endregion
@@ -300,7 +325,7 @@ namespace Server
     /// </summary>
     public class TestClient : TCPClient
     {
-        public override void Connect(string ip, int port)
+        public override bool Connect(string ip, int port)
         {
             IPAddress this_ip = IPAddress.Parse(ip);
 
@@ -309,20 +334,22 @@ namespace Server
                 MessageBox.Show("已存在,断开连接，请重新连接");
                 tcpClient.Close();
                 tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-                return;
+                return false;
             }
 
             try
             {
-                tcpClient.Connect(this_ip,port);
+                tcpClient.Connect(this_ip, port);
                 IpEndPort = tcpClient.RemoteEndPoint.ToString();
                 revThread = new Thread(new ParameterizedThreadStart(Reciving));
                 revThread.Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("连接失败");
+                MessageBox.Show(ex.Message+" 连接失败");
+                return false;
             }
+            return true;
         }
         //发送产品名称和版本
         public override void SendPdtInfo(string pdtName, string Version)
@@ -338,11 +365,18 @@ namespace Server
             version.CopyTo(sendData,len);
             tcpClient.Send(sendData);
         }
-        //发送
+        //发送文本
         public override void SendMsg(string msg)
         {
             tcpClient.Send(Encoding.Default.GetBytes("M"+msg));
         }
+
+        //发送更新请求
+        public override void SendReq(string msg)
+        {
+            tcpClient.Send(Encoding.Default.GetBytes("R" + msg));
+        }
+
         //接受
         public override void Reciving(object obj)
         {
@@ -372,6 +406,23 @@ namespace Server
                     string str = TypeChange.GetASCII(revBuffer[0]);
                     switch (str)
                     {
+                        //客户端的更新提示
+                        case "T":
+                            {
+                                string updataInfo = Encoding.Default.GetString(revBuffer, 1, length-1);
+                                if (updataInfo == "有最新版本,是否更新")
+                                {
+                                    if (MessageBox.Show(updataInfo, "更新提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
+                                    {
+                                        SendReq("请求下载最新版本软件");
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("已是最新版本，无需更新","更新提示");
+                                }
+                            }
+                            break;
                         //Message
                         case "M":
                             info.Enqueue(Encoding.Default.GetString(revBuffer, 1, length));
