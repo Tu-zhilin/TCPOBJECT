@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Controls.cs" />
+    <Compile Include="Application\Config.cs" />
     <Compile Include="Frem.cs">
       <SubType>Form</SubType>
     </Compile>
