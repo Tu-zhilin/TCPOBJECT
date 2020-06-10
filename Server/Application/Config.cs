@@ -38,12 +38,14 @@ namespace Server
             if (File.Exists(Path))
                 File.Delete(Path);
         }
+
         //清空数据
         public void Clear()
         {
             Deleted();
             CreatXMLFile();
         }
+
         //创建xml文件,创建完毕后直接关闭
         public void CreatXMLFile()
         {
@@ -56,50 +58,78 @@ namespace Server
             xmlDoc.AppendChild(root);
             Save();
         }
-        //修改节点(1)代表修改名字  (2)代表修改版本号
-        public void ChangeChildNode(string Name, string data, int index)
-        {
-            xmlDoc.Load(Path);
-            var root = xmlDoc.DocumentElement;
-            foreach (XmlNode item in root.ChildNodes)
-            {
-                if (item.Attributes["Name"].Value == Name)
-                {
-                    if (index == 1)
-                        item.Attributes["Name"].Value = data;
-                    else if (index == 2)
-                        item.Attributes["Version"].Value = data;
 
-                    break;
-                }
-            }
-            xmlDoc.Save(Path);
-        }
-        //删除节点
-        public void DeleChileNode(string Name)
+        //修改节点(1)代表修改名字  (2)代表修改版本号
+        public bool ChangeChildNode(string Name, string data, int index)
         {
-            xmlDoc.Load(Path);
-            var root = xmlDoc.DocumentElement;
-            foreach (XmlNode item in root.ChildNodes)
+            try
             {
-                if (item.Attributes["Name"].Value == Name)
+                xmlDoc.Load(Path);
+                var root = xmlDoc.DocumentElement;
+                foreach (XmlNode item in root.ChildNodes)
                 {
-                    root.RemoveChild(item);
-                    break;
+                    if (item.Attributes["Name"].Value == Name)
+                    {
+                        if (index == 1)
+                            item.Attributes["Name"].Value = data;
+                        else if (index == 2)
+                            item.Attributes["Version"].Value = data;
+
+                        break;
+                    }
                 }
+                xmlDoc.Save(Path);
+                return true;
             }
-            xmlDoc.Save(Path);
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
-        //插入节点
-        public void AddChileNode(string Name, string Version)
+
+        //删除节点
+        public bool DeleChileNode(string Name)
         {
-            xmlDoc.Load(Path);
-            XmlElement signal = xmlDoc.CreateElement("Product");
-            signal.SetAttribute("Name", Name);
-            signal.SetAttribute("Version", Version);
-            xmlDoc.DocumentElement.AppendChild(signal);
-            xmlDoc.Save(Path);
+            try
+            {
+                xmlDoc.Load(Path);
+                var root = xmlDoc.DocumentElement;
+                foreach (XmlNode item in root.ChildNodes)
+                {
+                    if (item.Attributes["Name"].Value == Name)
+                    {
+                        root.RemoveChild(item);
+                        break;
+                    }
+                }
+                xmlDoc.Save(Path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
+
+        //插入节点
+        public bool AddChileNode(string Name, string Version)
+        {
+            try
+            {
+                xmlDoc.Load(Path);
+                XmlElement signal = xmlDoc.CreateElement("Product");
+                signal.SetAttribute("Name", Name);
+                signal.SetAttribute("Version", Version);
+                xmlDoc.DocumentElement.AppendChild(signal);
+                xmlDoc.Save(Path);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         //遍历节点
         public List<Data> ReadNode()
         {
@@ -123,16 +153,11 @@ namespace Server
             reader.Close();
             return list;
         }
+
         //保存
         public void Save()
         {
             xmlDoc.Save(Path);
-        }
-        //防止未保存
-        ~Config()
-        {
-            reader.Close();
-            Save();
         }
     }
 }

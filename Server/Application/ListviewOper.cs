@@ -11,8 +11,8 @@ namespace Server
     {
         private delegate void Action();
 
-        //修改
-        public static void ListviewChangeData(ListView list,string data,int index)
+        //修改选中的上位机信息
+        public static void ChangeData(ListView list,string data,int index)
         {
             int i = 1;
             if (list.SelectedItems.Count > 0)
@@ -27,9 +27,11 @@ namespace Server
                 return;
         }
 
-        //加载上位机信息
-        public static void LoadSoftInfo(ListView listview,List<Config.Data> dataList)
+        //加载全部上位机信息
+        public static Dictionary<string,string> LoadSoftInfo(ListView listview,List<Config.Data> dataList)
         {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+
             Action action = new Action(() => {            
                 //先清空所有的信息
                 listview.Items.Clear();
@@ -42,15 +44,17 @@ namespace Server
                     lvi.SubItems.Add(item._Version);
                     listview.EndUpdate();
                     listview.Items.Add(lvi);
+                    dic.Add(item._Name, item._Version);
                 }
             });
 
             listview.Invoke(action);
+            return dic;
         }
-        //添加地址
+        //将接受到的地址添加进去
         public  static void Add_Address(ListView listview,string data)
         {                       
-            int Number = listview.Items.Count;
+            //int Number = listview.Items.Count;
             ListViewItem lvi = new ListViewItem();
             string[] str = new string[] {"待写入","待写入","在线"};
             Action action = new Action(() =>
@@ -64,7 +68,7 @@ namespace Server
             listview.Invoke(action);
         }
 
-        //修改产品名字和版本
+        //修改客户端名字和版本
         public static void Change_Info(ListView listview,string ipaddress,string name,string Version)
         {
             Action action = new Action(() => {
@@ -74,8 +78,8 @@ namespace Server
                     {
                         item.SubItems[1].Text = name;
                         item.SubItems[2].Text = Version;
-                        item.Selected = true;
-                        item.EnsureVisible();
+                        //item.Selected = true;
+                        //item.EnsureVisible();
                         return;
                     }
                 }
@@ -84,7 +88,7 @@ namespace Server
             listview.Invoke(action);
         }
 
-        //删除
+        //删除下线设备
         public static void Dele_Info(ListView listview,string ipaddress)
         {
             Action action = new Action(() => {
@@ -99,6 +103,27 @@ namespace Server
             });
 
             listview.Invoke(action);
+        }
+
+        //添加上位机信息
+        public static void Insert_Info(ListView listview,string name,string version)
+        {
+            ListViewItem lvi = new ListViewItem();
+            Action action = new Action(() =>
+            {
+                listview.BeginUpdate();
+                lvi.Text = name;
+                lvi.SubItems.Add(version);
+                listview.EndUpdate();
+                listview.Items.Add(lvi);
+            });
+            listview.Invoke(action);
+        }
+
+        //删除产品信息
+        public static void Dele_Data(ListView listview)
+        {
+            listview.Items.Remove(listview.SelectedItems[0]);
         }
     }
 }

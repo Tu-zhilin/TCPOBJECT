@@ -46,9 +46,11 @@ namespace Server
         public int localPort;
         //Listview
         public ListView listview;
+        //产品信息存储
+        public Dictionary<string, string> softDic;
 
         public TCPServer(ListView listview)
-        {            
+        {
             GetIPandPort();
             this.listview = listview;
             clientsDictionary = new Dictionary<string, ProductInfo>();
@@ -56,7 +58,7 @@ namespace Server
         }
 
         //获取本地ip/port
-        public void GetIPandPort()
+        public virtual void GetIPandPort()
         {
             string AddressIP = string.Empty;
             foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
@@ -83,6 +85,8 @@ namespace Server
         public abstract void SendFile(string ipaddress);
         //发送更新提示
         public abstract void SendUpdataInfo(string ipaddress,string msg);
+        //自动发送文件
+        public abstract void SendFile(string ipaddress,string path);
     }
 
     #endregion
@@ -120,6 +124,8 @@ namespace Server
                 //开始监听
                 MessageBox.Show("服务器开启,等待连接", "连接成功");
                 listenThread = new Thread(Listenning);
+                listenThread.IsBackground = true;
+                listenThread.TrySetApartmentState(ApartmentState.STA);
                 listenThread.Start();
             }
             catch (Exception ex)
@@ -142,6 +148,8 @@ namespace Server
                 ListviewOper.Add_Address(this.listview, ipadreess);
                 //开启接收线程
                 Thread thread = new Thread(new ParameterizedThreadStart(Receiving));
+                thread.IsBackground = true;
+                thread.TrySetApartmentState(ApartmentState.STA);
                 thread.Start(clientSocket);
             }
         }
@@ -189,19 +197,35 @@ namespace Server
                         //客户端的更新请求
                         case "R":
                             //TODO:发送响应的文件过去
-                            info.Enqueue("发送文件过去");
+                            {
+                                info.Enqueue("发送文件过去");
+                                string PdtName = clientsDictionary[ipadreess].PdtName;
+                                string PdtVer = clientsDictionary[ipadreess].pdtVer;
+                                //拼接产品地址
+                                SendFile(ipadreess);
+                            }                         
                             break;
                         //接收软件信息
                         case "H":
                             {
-                                //存储产品名和软件版本
-                                clientsDictionary[ipadreess].PdtName = Encoding.Default.GetString(revBuffer, 2, revBuffer[1] - 2);                          
-                                clientsDictionary[ipadreess].pdtVer = Encoding.Default.GetString(revBuffer, revBuffer[1], length);                      
-                                //添加进Listview
-                                ListviewOper.Change_Info(listview,ipadreess, clientsDictionary[ipadreess].PdtName, clientsDictionary[ipadreess].pdtVer);
-                                //进行比对版本
-                                //TODO：如果版本一致，回复无需更新，如果不一致，发送需要更新
-                                SendUpdataInfo(ipadreess, "有最新版本,是否更新");
+                                try
+                                {
+                                    //存储产品名和软件版本
+                                    clientsDictionary[ipadreess].PdtName = Encoding.Default.GetString(revBuffer, 2, revBuffer[1] - 2);
+                                    clientsDictionary[ipadreess].pdtVer = Encoding.Default.GetString(revBuffer, revBuffer[1], length - revBuffer[1]);
+                                    //添加进Listview
+                                    ListviewOper.Change_Info(listview, ipadreess, clientsDictionary[ipadreess].PdtName, clientsDictionary[ipadreess].pdtVer);
+                                    //TODO：如果版本一致，回复无需更新，如果不一致，发送需要更新
+                                    if (clientsDictionary[ipadreess].pdtVer != softDic[clientsDictionary[ipadreess].PdtName])
+                                        SendUpdataInfo(ipadreess, "有最新版本,是否更新");
+                                    else
+
+                                        SendUpdataInfo(ipadreess, "已是最新版本");
+                                }
+                                catch (Exception ex)
+                                {
+                                    info.Enqueue(ex.Message);
+                                }
                             }
                             break;
                         //Message
@@ -238,21 +262,27 @@ namespace Server
                 info.Enqueue(ex.Message);
             }
         }
+        //自动选择文件发送
+        public override void SendFile(string ipaddress, string path)
+        {
+            //这里需要跟下边抽出一个相同的函数使用
+        }
         //发送文件
         public override void SendFile(string ipaddress)
         {
             string filePath = null;
             string fileName = null;
             OpenFileDialog openFile = new OpenFileDialog();
-            //选择文件
-            if (openFile.ShowDialog() == DialogResult.OK)
-            {
-                filePath = openFile.FileName;
-                fileName = openFile.SafeFileName;
-            }
-            //读取文件
+
             try
             {
+                //选择文件
+                if (openFile.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFile.FileName;
+                    fileName = openFile.SafeFileName;
+                 }
+                 //读取文件
                 FileStream fsRead = new FileStream(filePath, FileMode.Open);
                 int datalength = (int)fsRead.Length;
                 byte[] buffer = new byte[datalength];
@@ -342,6 +372,8 @@ namespace Server
                 tcpClient.Connect(this_ip, port);
                 IpEndPort = tcpClient.RemoteEndPoint.ToString();
                 revThread = new Thread(new ParameterizedThreadStart(Reciving));
+                revThread.IsBackground = true;
+                revThread.TrySetApartmentState(ApartmentState.STA);
                 revThread.Start();
             }
             catch (Exception ex)
@@ -420,6 +452,8 @@ namespace Server
                                 else
                                 {
                                     MessageBox.Show("已是最新版本，无需更新","更新提示");
+                                    tcpClient.Close();
+                                    tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                                 }
                             }
                             break;
@@ -440,7 +474,9 @@ namespace Server
                                 fswrite.Write(revBuffer, revBuffer[1], length - revBuffer[1]);
 
                                 fswrite.Close();
-                            }                             
+                            }
+                            tcpClient.Close();
+                            tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                             break;
                     }                    
                 }

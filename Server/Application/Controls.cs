@@ -165,9 +165,8 @@ namespace Template
         }
     }
 
-    /// <summary>
-    /// 抽象工厂模式
-    /// </summary>
+    #region 工厂
+
     abstract class ControlFactory
     {
         public MyTabcontrol myTabcontrol;
@@ -182,8 +181,12 @@ namespace Template
 
         public abstract TabControl GetTab();
     }
+    #endregion
 
-    class ServerFactory: ControlFactory
+    /// <summary>
+    /// 服务端控件生成
+    /// </summary>
+    class ServerFactory : ControlFactory
     {
         public ServerFactory():base()
         {

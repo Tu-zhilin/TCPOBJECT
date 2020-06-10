@@ -59,7 +59,7 @@
             this.groupBox1.Size = new System.Drawing.Size(415, 381);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.groupBox1.Text = "服务端";
             // 
             // button2
             // 
@@ -95,7 +95,7 @@
             this.Sip.Name = "Sip";
             this.Sip.Size = new System.Drawing.Size(100, 21);
             this.Sip.TabIndex = 2;
-            this.Sip.Text = "192.168.5.106";
+            this.Sip.Text = "192.168.43.107";
             // 
             // SStart
             // 
@@ -127,18 +127,18 @@
             this.groupBox2.Size = new System.Drawing.Size(355, 381);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "groupBox2";
+            this.groupBox2.Text = "客户端";
             // 
             // Cip
             // 
             this.Cip.Location = new System.Drawing.Point(29, 42);
             this.Cip.Name = "Cip";
-            this.Cip.Size = new System.Drawing.Size(100, 21);
+            this.Cip.Size = new System.Drawing.Size(222, 21);
             this.Cip.TabIndex = 4;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(257, 264);
+            this.button1.Location = new System.Drawing.Point(274, 264);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;

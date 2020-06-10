@@ -16,8 +16,11 @@ namespace Server
         public TCPClient client;
         //XML
         public Config config;
+        //存储本地软件信息
+
         public Product()
         {
+            //softDic = new Dictionary<string, string>();
             factor = new ServerFactory();
             server = new TestService(factor.myTabPage.dictionary["Device"]);
             client = new TestClient();
@@ -27,7 +30,7 @@ namespace Server
         //加载产品信息
         public void LoadData()
         {
-            ListviewOper.LoadSoftInfo(factor.myTabPage.dictionary["SoftVersion"], config.ReadNode());
+            server.softDic = ListviewOper.LoadSoftInfo(factor.myTabPage.dictionary["SoftVersion"], config.ReadNode());
         }
     }
 }

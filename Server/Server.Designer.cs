@@ -48,19 +48,19 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ProductName = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.TestWindow = new System.Windows.Forms.Button();
             this.SendWord = new System.Windows.Forms.TextBox();
+            this.TestWindow = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.Load = new System.Windows.Forms.Button();
-            this.pdtName = new System.Windows.Forms.TextBox();
-            this.pdtVer = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.Add = new System.Windows.Forms.Button();
-            this.Change = new System.Windows.Forms.Button();
             this.Dele = new System.Windows.Forms.Button();
+            this.Change = new System.Windows.Forms.Button();
+            this.Add = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pdtVer = new System.Windows.Forms.TextBox();
+            this.pdtName = new System.Windows.Forms.TextBox();
+            this.Load = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -252,6 +252,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "手动操作";
             // 
+            // SendWord
+            // 
+            this.SendWord.Location = new System.Drawing.Point(29, 106);
+            this.SendWord.Name = "SendWord";
+            this.SendWord.Size = new System.Drawing.Size(181, 21);
+            this.SendWord.TabIndex = 3;
+            this.SendWord.Text = "向客户端发送一条信息";
+            // 
             // TestWindow
             // 
             this.TestWindow.Location = new System.Drawing.Point(135, 28);
@@ -262,17 +270,10 @@
             this.TestWindow.UseVisualStyleBackColor = true;
             this.TestWindow.Click += new System.EventHandler(this.TestWindow_Click);
             // 
-            // SendWord
-            // 
-            this.SendWord.Location = new System.Drawing.Point(29, 106);
-            this.SendWord.Name = "SendWord";
-            this.SendWord.Size = new System.Drawing.Size(181, 21);
-            this.SendWord.TabIndex = 3;
-            this.SendWord.Text = "向客户端发送一条信息";
-            // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
+            this.listBox1.HorizontalScrollbar = true;
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(1016, 20);
             this.listBox1.Name = "listBox1";
@@ -300,38 +301,35 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "XML操作";
             // 
-            // Load
+            // Dele
             // 
-            this.Load.Location = new System.Drawing.Point(93, 219);
-            this.Load.Name = "Load";
-            this.Load.Size = new System.Drawing.Size(75, 23);
-            this.Load.TabIndex = 4;
-            this.Load.Text = "加载";
-            this.Load.UseVisualStyleBackColor = true;
-            this.Load.Click += new System.EventHandler(this.Load_Click);
+            this.Dele.Location = new System.Drawing.Point(10, 186);
+            this.Dele.Name = "Dele";
+            this.Dele.Size = new System.Drawing.Size(75, 23);
+            this.Dele.TabIndex = 12;
+            this.Dele.Text = "删除";
+            this.Dele.UseVisualStyleBackColor = true;
+            this.Dele.Click += new System.EventHandler(this.Dele_Click);
             // 
-            // pdtName
+            // Change
             // 
-            this.pdtName.Location = new System.Drawing.Point(22, 48);
-            this.pdtName.Name = "pdtName";
-            this.pdtName.Size = new System.Drawing.Size(146, 21);
-            this.pdtName.TabIndex = 8;
+            this.Change.Location = new System.Drawing.Point(93, 186);
+            this.Change.Name = "Change";
+            this.Change.Size = new System.Drawing.Size(75, 23);
+            this.Change.TabIndex = 11;
+            this.Change.Text = "修改";
+            this.Change.UseVisualStyleBackColor = true;
+            this.Change.Click += new System.EventHandler(this.Change_Click);
             // 
-            // pdtVer
+            // Add
             // 
-            this.pdtVer.Location = new System.Drawing.Point(22, 94);
-            this.pdtVer.Name = "pdtVer";
-            this.pdtVer.Size = new System.Drawing.Size(146, 21);
-            this.pdtVer.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 24);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 12);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "产品型号";
+            this.Add.Location = new System.Drawing.Point(10, 219);
+            this.Add.Name = "Add";
+            this.Add.Size = new System.Drawing.Size(75, 23);
+            this.Add.TabIndex = 10;
+            this.Add.Text = "添加";
+            this.Add.UseVisualStyleBackColor = true;
+            this.Add.Click += new System.EventHandler(this.Add_Click);
             // 
             // label7
             // 
@@ -342,32 +340,38 @@
             this.label7.TabIndex = 8;
             this.label7.Text = "软件版本";
             // 
-            // Add
+            // label6
             // 
-            this.Add.Location = new System.Drawing.Point(10, 219);
-            this.Add.Name = "Add";
-            this.Add.Size = new System.Drawing.Size(75, 23);
-            this.Add.TabIndex = 10;
-            this.Add.Text = "添加";
-            this.Add.UseVisualStyleBackColor = true;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "产品型号";
             // 
-            // Change
+            // pdtVer
             // 
-            this.Change.Location = new System.Drawing.Point(93, 186);
-            this.Change.Name = "Change";
-            this.Change.Size = new System.Drawing.Size(75, 23);
-            this.Change.TabIndex = 11;
-            this.Change.Text = "修改";
-            this.Change.UseVisualStyleBackColor = true;
+            this.pdtVer.Location = new System.Drawing.Point(22, 94);
+            this.pdtVer.Name = "pdtVer";
+            this.pdtVer.Size = new System.Drawing.Size(146, 21);
+            this.pdtVer.TabIndex = 9;
             // 
-            // Dele
+            // pdtName
             // 
-            this.Dele.Location = new System.Drawing.Point(10, 186);
-            this.Dele.Name = "Dele";
-            this.Dele.Size = new System.Drawing.Size(75, 23);
-            this.Dele.TabIndex = 12;
-            this.Dele.Text = "删除";
-            this.Dele.UseVisualStyleBackColor = true;
+            this.pdtName.Location = new System.Drawing.Point(22, 48);
+            this.pdtName.Name = "pdtName";
+            this.pdtName.Size = new System.Drawing.Size(146, 21);
+            this.pdtName.TabIndex = 8;
+            // 
+            // Load
+            // 
+            this.Load.Location = new System.Drawing.Point(93, 219);
+            this.Load.Name = "Load";
+            this.Load.Size = new System.Drawing.Size(75, 23);
+            this.Load.TabIndex = 4;
+            this.Load.Text = "加载";
+            this.Load.UseVisualStyleBackColor = true;
+            this.Load.Click += new System.EventHandler(this.Load_Click);
             // 
             // Server
             // 
