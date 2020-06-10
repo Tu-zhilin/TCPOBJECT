@@ -62,7 +62,7 @@ namespace Server
             Form form = new Frem();
             form.Show();
         }
-
+        //发送文本按钮
         private void SendText_Click(object sender, EventArgs e)
         {
             if (pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems.Count > 0)
@@ -70,7 +70,7 @@ namespace Server
                 pdt.server.SendMsg(ClientIPendPort.Text, SendWord.Text);
             }
         }
-
+        //发送文件按钮
         private void SendFile_Click(object sender, EventArgs e)
         {
             if (pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems.Count > 0)

@@ -14,12 +14,14 @@ namespace Server
         public TCPServer server;
         //客户端
         public TCPClient client;
-
+        //XML
+        public Config config;
         public Product()
         {
             factor = new ServerFactory();
             server = new TestService(factor.myTabPage.dictionary["Device"]);
             client = new TestClient();
+            config = new Config("SoftInfo");
         }
     }
 }

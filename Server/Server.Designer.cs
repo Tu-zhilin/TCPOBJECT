@@ -52,10 +52,20 @@
             this.SendWord = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.Load = new System.Windows.Forms.Button();
+            this.pdtName = new System.Windows.Forms.TextBox();
+            this.pdtVer = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.Add = new System.Windows.Forms.Button();
+            this.Change = new System.Windows.Forms.Button();
+            this.Dele = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // SendText
@@ -92,6 +102,7 @@
             // 
             this.ServerIp.Location = new System.Drawing.Point(17, 25);
             this.ServerIp.Name = "ServerIp";
+            this.ServerIp.ReadOnly = true;
             this.ServerIp.Size = new System.Drawing.Size(100, 21);
             this.ServerIp.TabIndex = 3;
             // 
@@ -99,6 +110,7 @@
             // 
             this.ServerPort.Location = new System.Drawing.Point(17, 61);
             this.ServerPort.Name = "ServerPort";
+            this.ServerPort.ReadOnly = true;
             this.ServerPort.Size = new System.Drawing.Size(100, 21);
             this.ServerPort.TabIndex = 4;
             // 
@@ -133,6 +145,7 @@
             // 
             this.ClientSoftVer.Location = new System.Drawing.Point(68, 93);
             this.ClientSoftVer.Name = "ClientSoftVer";
+            this.ClientSoftVer.ReadOnly = true;
             this.ClientSoftVer.Size = new System.Drawing.Size(146, 21);
             this.ClientSoftVer.TabIndex = 6;
             // 
@@ -158,6 +171,7 @@
             // 
             this.ClientPdtType.Location = new System.Drawing.Point(68, 56);
             this.ClientPdtType.Name = "ClientPdtType";
+            this.ClientPdtType.ReadOnly = true;
             this.ClientPdtType.Size = new System.Drawing.Size(146, 21);
             this.ClientPdtType.TabIndex = 2;
             // 
@@ -174,6 +188,7 @@
             // 
             this.ClientIPendPort.Location = new System.Drawing.Point(68, 20);
             this.ClientIPendPort.Name = "ClientIPendPort";
+            this.ClientIPendPort.ReadOnly = true;
             this.ClientIPendPort.Size = new System.Drawing.Size(146, 21);
             this.ClientIPendPort.TabIndex = 0;
             // 
@@ -203,6 +218,7 @@
             // 
             this.SoftVersion.Location = new System.Drawing.Point(68, 57);
             this.SoftVersion.Name = "SoftVersion";
+            this.SoftVersion.ReadOnly = true;
             this.SoftVersion.Size = new System.Drawing.Size(146, 21);
             this.SoftVersion.TabIndex = 3;
             // 
@@ -219,6 +235,7 @@
             // 
             this.ProductName.Location = new System.Drawing.Point(68, 20);
             this.ProductName.Name = "ProductName";
+            this.ProductName.ReadOnly = true;
             this.ProductName.Size = new System.Drawing.Size(146, 21);
             this.ProductName.TabIndex = 2;
             // 
@@ -266,11 +283,97 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.Dele);
+            this.groupBox4.Controls.Add(this.Change);
+            this.groupBox4.Controls.Add(this.Add);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.pdtVer);
+            this.groupBox4.Controls.Add(this.pdtName);
+            this.groupBox4.Controls.Add(this.Load);
+            this.groupBox4.Location = new System.Drawing.Point(1016, 270);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(174, 251);
+            this.groupBox4.TabIndex = 10;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "XML操作";
+            // 
+            // Load
+            // 
+            this.Load.Location = new System.Drawing.Point(93, 219);
+            this.Load.Name = "Load";
+            this.Load.Size = new System.Drawing.Size(75, 23);
+            this.Load.TabIndex = 4;
+            this.Load.Text = "加载";
+            this.Load.UseVisualStyleBackColor = true;
+            // 
+            // pdtName
+            // 
+            this.pdtName.Location = new System.Drawing.Point(22, 48);
+            this.pdtName.Name = "pdtName";
+            this.pdtName.Size = new System.Drawing.Size(146, 21);
+            this.pdtName.TabIndex = 8;
+            // 
+            // pdtVer
+            // 
+            this.pdtVer.Location = new System.Drawing.Point(22, 94);
+            this.pdtVer.Name = "pdtVer";
+            this.pdtVer.Size = new System.Drawing.Size(146, 21);
+            this.pdtVer.TabIndex = 9;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "产品型号";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 77);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 12);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "软件版本";
+            // 
+            // Add
+            // 
+            this.Add.Location = new System.Drawing.Point(10, 219);
+            this.Add.Name = "Add";
+            this.Add.Size = new System.Drawing.Size(75, 23);
+            this.Add.TabIndex = 10;
+            this.Add.Text = "添加";
+            this.Add.UseVisualStyleBackColor = true;
+            // 
+            // Change
+            // 
+            this.Change.Location = new System.Drawing.Point(93, 186);
+            this.Change.Name = "Change";
+            this.Change.Size = new System.Drawing.Size(75, 23);
+            this.Change.TabIndex = 11;
+            this.Change.Text = "修改";
+            this.Change.UseVisualStyleBackColor = true;
+            // 
+            // Dele
+            // 
+            this.Dele.Location = new System.Drawing.Point(10, 186);
+            this.Dele.Name = "Dele";
+            this.Dele.Size = new System.Drawing.Size(75, 23);
+            this.Dele.TabIndex = 12;
+            this.Dele.Text = "删除";
+            this.Dele.UseVisualStyleBackColor = true;
+            // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 533);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -286,6 +389,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -315,5 +420,14 @@
         private System.Windows.Forms.TextBox SendWord;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button Dele;
+        private System.Windows.Forms.Button Change;
+        private System.Windows.Forms.Button Add;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox pdtVer;
+        private System.Windows.Forms.TextBox pdtName;
+        private System.Windows.Forms.Button Load;
     }
 }

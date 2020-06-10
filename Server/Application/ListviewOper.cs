@@ -11,6 +11,42 @@ namespace Server
     {
         private delegate void Action();
 
+        //修改
+        public static void ListviewChangeData(ListView list,string data,int index)
+        {
+            int i = 1;
+            if (list.SelectedItems.Count > 0)
+            {
+                if (index == 1)
+                    list.SelectedItems[0].Text = data;
+                else if(index == 2)
+                    list.SelectedItems[0].SubItems[1].Text = data;
+
+            }
+            else
+                return;
+        }
+
+        //加载上位机信息
+        public static void LoadSoftInfo(ListView listview,List<Config.Data> dataList)
+        {
+            Action action = new Action(() => {            
+                //先清空所有的信息
+                listview.Items.Clear();
+                //循环加载
+                foreach (Config.Data item in dataList)
+                {
+                    ListViewItem lvi = new ListViewItem();
+                    listview.BeginUpdate();
+                    lvi.Text = item._Name;
+                    lvi.SubItems.Add(item._Version);
+                    listview.EndUpdate();
+                    listview.Items.Add(lvi);
+                }
+            });
+
+            listview.Invoke(action);
+        }
         //添加地址
         public  static void Add_Address(ListView listview,string data)
         {                       
