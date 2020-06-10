@@ -49,12 +49,11 @@ namespace Server
 
         private void button1_Click(object sender, EventArgs e)
         {
-            pdt.client.Send("客户端发送一个消息");
+            pdt.client.SendPdtInfo("五菱CTF28E","V1.1.1");
         }
 
         private void Ssend_Click(object sender, EventArgs e)
         {
-            //pdt.server.SendFile(Cip.Text);
             pdt.server.SendMsg(Cip.Text,"服务器发送一个消息");
         }
 

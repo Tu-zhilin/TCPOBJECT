@@ -30,18 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.SStart = new System.Windows.Forms.Button();
-            this.Sip = new System.Windows.Forms.TextBox();
-            this.Sport = new System.Windows.Forms.TextBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.Conn = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.Cip = new System.Windows.Forms.TextBox();
-            this.Ssend = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.Ssend = new System.Windows.Forms.Button();
+            this.Sport = new System.Windows.Forms.TextBox();
+            this.Sip = new System.Windows.Forms.TextBox();
+            this.SStart = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Cip = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.Conn = new System.Windows.Forms.Button();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +61,61 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(320, 310);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "发送";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // Ssend
+            // 
+            this.Ssend.Location = new System.Drawing.Point(320, 264);
+            this.Ssend.Name = "Ssend";
+            this.Ssend.Size = new System.Drawing.Size(75, 23);
+            this.Ssend.TabIndex = 6;
+            this.Ssend.Text = "发送";
+            this.Ssend.UseVisualStyleBackColor = true;
+            this.Ssend.Click += new System.EventHandler(this.Ssend_Click);
+            // 
+            // Sport
+            // 
+            this.Sport.Location = new System.Drawing.Point(163, 44);
+            this.Sport.Name = "Sport";
+            this.Sport.Size = new System.Drawing.Size(100, 21);
+            this.Sport.TabIndex = 3;
+            this.Sport.Text = "5000";
+            // 
+            // Sip
+            // 
+            this.Sip.Location = new System.Drawing.Point(37, 44);
+            this.Sip.Name = "Sip";
+            this.Sip.Size = new System.Drawing.Size(100, 21);
+            this.Sip.TabIndex = 2;
+            this.Sip.Text = "192.168.5.106";
+            // 
+            // SStart
+            // 
+            this.SStart.Location = new System.Drawing.Point(311, 42);
+            this.SStart.Name = "SStart";
+            this.SStart.Size = new System.Drawing.Size(75, 23);
+            this.SStart.TabIndex = 1;
+            this.SStart.Text = "启动服务器";
+            this.SStart.UseVisualStyleBackColor = true;
+            this.SStart.Click += new System.EventHandler(this.SStart_Click);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(6, 96);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(403, 136);
+            this.listBox1.TabIndex = 0;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.Cip);
@@ -74,61 +129,12 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "groupBox2";
             // 
-            // listBox1
+            // Cip
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(6, 96);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(403, 136);
-            this.listBox1.TabIndex = 0;
-            // 
-            // listBox2
-            // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 12;
-            this.listBox2.Location = new System.Drawing.Point(6, 96);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(343, 136);
-            this.listBox2.TabIndex = 1;
-            // 
-            // SStart
-            // 
-            this.SStart.Location = new System.Drawing.Point(311, 42);
-            this.SStart.Name = "SStart";
-            this.SStart.Size = new System.Drawing.Size(75, 23);
-            this.SStart.TabIndex = 1;
-            this.SStart.Text = "启动服务器";
-            this.SStart.UseVisualStyleBackColor = true;
-            this.SStart.Click += new System.EventHandler(this.SStart_Click);
-            // 
-            // Sip
-            // 
-            this.Sip.Location = new System.Drawing.Point(37, 44);
-            this.Sip.Name = "Sip";
-            this.Sip.Size = new System.Drawing.Size(100, 21);
-            this.Sip.TabIndex = 2;
-            // 
-            // Sport
-            // 
-            this.Sport.Location = new System.Drawing.Point(163, 44);
-            this.Sport.Name = "Sport";
-            this.Sport.Size = new System.Drawing.Size(100, 21);
-            this.Sport.TabIndex = 3;
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // Conn
-            // 
-            this.Conn.Location = new System.Drawing.Point(257, 42);
-            this.Conn.Name = "Conn";
-            this.Conn.Size = new System.Drawing.Size(75, 23);
-            this.Conn.TabIndex = 4;
-            this.Conn.Text = "连接服务器";
-            this.Conn.UseVisualStyleBackColor = true;
-            this.Conn.Click += new System.EventHandler(this.Conn_Click);
+            this.Cip.Location = new System.Drawing.Point(29, 42);
+            this.Cip.Name = "Cip";
+            this.Cip.Size = new System.Drawing.Size(100, 21);
+            this.Cip.TabIndex = 4;
             // 
             // button1
             // 
@@ -140,32 +146,28 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Cip
+            // Conn
             // 
-            this.Cip.Location = new System.Drawing.Point(29, 42);
-            this.Cip.Name = "Cip";
-            this.Cip.Size = new System.Drawing.Size(100, 21);
-            this.Cip.TabIndex = 4;
+            this.Conn.Location = new System.Drawing.Point(257, 42);
+            this.Conn.Name = "Conn";
+            this.Conn.Size = new System.Drawing.Size(75, 23);
+            this.Conn.TabIndex = 4;
+            this.Conn.Text = "连接服务器";
+            this.Conn.UseVisualStyleBackColor = true;
+            this.Conn.Click += new System.EventHandler(this.Conn_Click);
             // 
-            // Ssend
+            // listBox2
             // 
-            this.Ssend.Location = new System.Drawing.Point(320, 264);
-            this.Ssend.Name = "Ssend";
-            this.Ssend.Size = new System.Drawing.Size(75, 23);
-            this.Ssend.TabIndex = 6;
-            this.Ssend.Text = "发送";
-            this.Ssend.UseVisualStyleBackColor = true;
-            this.Ssend.Click += new System.EventHandler(this.Ssend_Click);
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 12;
+            this.listBox2.Location = new System.Drawing.Point(6, 96);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(343, 136);
+            this.listBox2.TabIndex = 1;
             // 
-            // button2
+            // timer1
             // 
-            this.button2.Location = new System.Drawing.Point(320, 310);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "发送";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Frem
             // 

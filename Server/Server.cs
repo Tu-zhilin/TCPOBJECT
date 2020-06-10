@@ -21,11 +21,14 @@ namespace Server
             tabControl = pdt.factor.tabControl;
             InitializeComponent();
             this.Controls.Add(tabControl);
+            BindEvent();
+            timer1.Start();
         }
         //事件绑定
         public void BindEvent()
         {
-
+            pdt.factor.myTabPage.dictionary["Device"].ItemSelectionChanged += DeviceListview;
+            pdt.factor.myTabPage.dictionary["SoftVersion"].ItemSelectionChanged += SoftListview;
         }
         //开启服务器
         private void ServerOpen_Click(object sender, EventArgs e)
@@ -53,11 +56,36 @@ namespace Server
                 SoftVersion.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[1].Text;
             }
         }
-
+        //测试窗口
         private void TestWindow_Click(object sender, EventArgs e)
         {
             Form form = new Frem();
             form.Show();
+        }
+
+        private void SendText_Click(object sender, EventArgs e)
+        {
+            if (pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems.Count > 0)
+            {
+                pdt.server.SendMsg(ClientIPendPort.Text, SendWord.Text);
+            }
+        }
+
+        private void SendFile_Click(object sender, EventArgs e)
+        {
+            if (pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems.Count > 0)
+            {
+                pdt.server.SendFile(ClientIPendPort.Text);
+            }
+        }
+
+        //定时器
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            while (pdt.server.info.Count != 0)
+            {
+                listBox1.Items.Add(pdt.server.info.Dequeue());
+            }
         }
     }
 }

@@ -54,7 +54,7 @@
     <Compile Include="Frem.Designer.cs">
       <DependentUpon>Frem.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListviewOper.cs" />
+    <Compile Include="Application\ListviewOper.cs" />
     <Compile Include="Prduct.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +65,7 @@
     <Compile Include="Server.Designer.cs">
       <DependentUpon>Server.cs</DependentUpon>
     </Compile>
+    <Compile Include="Application\TypeChange.cs" />
     <EmbeddedResource Include="Frem.resx">
       <DependentUpon>Frem.cs</DependentUpon>
     </EmbeddedResource>

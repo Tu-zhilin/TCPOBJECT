@@ -17,11 +17,21 @@ namespace Server
     #region 服务端抽象类
 
     public abstract class TCPServer
-    {     
+    {
+        public class ProductInfo
+        {
+            //客户端套接字
+            public Socket clientSocket;
+            //产品名称
+            public string PdtName;
+            //版本信息
+            public string pdtVer;
+        }
+
         //服务端套接字
         public Socket serverSocket;
         //客户端套接字集合
-        public Dictionary<string, Socket> clientsDictionary;
+        public Dictionary<string, ProductInfo> clientsDictionary;
         //监听线程
         public Thread listenThread;
         //接收线程
@@ -36,16 +46,13 @@ namespace Server
         public int localPort;
         //Listview
         public ListView listview;
-        //委托
-        public delegate void Action(ListView listveiw ,string data);
 
         public TCPServer(ListView listview)
         {            
             GetIPandPort();
             this.listview = listview;
-            clientsDictionary = new Dictionary<string, Socket>();
+            clientsDictionary = new Dictionary<string, ProductInfo>();
             info = new Queue<string>();
-            Action action = new Action(ListviewOper.Add);
         }
 
         //获取本地ip/port
@@ -125,16 +132,18 @@ namespace Server
             while (true)
             {
                 clientSocket = serverSocket.Accept();
+                ProductInfo productInfo = new ProductInfo();
+                productInfo.clientSocket = clientSocket;
                 string ipadreess = clientSocket.RemoteEndPoint.ToString();
-                clientsDictionary.Add(ipadreess, clientSocket);
+                clientsDictionary.Add(ipadreess, productInfo);
                 info.Enqueue(ipadreess + "已连接");
-                ListviewOper.Add(this.listview, ipadreess);
+                ListviewOper.Add_Address(this.listview, ipadreess);
                 //开启接收线程
                 Thread thread = new Thread(new ParameterizedThreadStart(Receiving));
                 thread.Start(clientSocket);
             }
         }
-
+        //接收
         public override void Receiving(object obj)
         {
             while (true)
@@ -150,15 +159,17 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    info.Enqueue(ex.Message+ ipadreess + "异常退出");
+                    info.Enqueue(string.Format("客户端{0}退出:{1}返回值{2}", ipadreess,ex.Message,length));
                     clientsDictionary.Remove(ipadreess);
+                    ListviewOper.Dele_Info(listview, ipadreess);
                     return;
                 }
 
-                if (length == 0)
+                if (length == 0 || length == -1)
                 {
-                    info.Enqueue(ipadreess + "正常退出");
+                    info.Enqueue(string.Format("客户端{0}退出:返回值{1}",ipadreess,length));
                     clientsDictionary.Remove(ipadreess);
+                    ListviewOper.Dele_Info(listview,ipadreess);
                     return;
                 }
 
@@ -170,18 +181,41 @@ namespace Server
 
                 else
                 {
-                    info.Enqueue(Encoding.Default.GetString(revBuffer, 0, length));
+                    string str = TypeChange.GetASCII(revBuffer[0]);
+                    switch (str)
+                    {
+                        //接收软件信息
+                        case "H":
+                            {
+                                clientsDictionary[ipadreess].PdtName = Encoding.Default.GetString(revBuffer, 2, revBuffer[1] - 2);
+                                //info.Enqueue(clientsDictionary[ipadreess].PdtName);
+                                clientsDictionary[ipadreess].pdtVer = Encoding.Default.GetString(revBuffer, revBuffer[1], length);
+                                //info.Enqueue(clientsDictionary[ipadreess].pdtVer);
+                                ListviewOper.Change_Info(listview,ipadreess, clientsDictionary[ipadreess].PdtName, clientsDictionary[ipadreess].pdtVer);
+                            }
+                            break;
+                        //Message
+                        case "M":
+                            info.Enqueue(Encoding.Default.GetString(revBuffer, 1, length));
+                            break;
+                    }
                 }
             }
         }
-
+        //发送文字
         public override void SendMsg(string ipaddress, string msg)
         {
-            //发送文字
-            msg = "M" + msg;
-            clientsDictionary[ipaddress].Send(Encoding.Default.GetBytes(msg));
+            try
+            {
+                msg = "M" + msg;
+                clientsDictionary[ipaddress].clientSocket.Send(Encoding.Default.GetBytes(msg));
+            }
+            catch (Exception ex)
+            {
+                info.Enqueue(ex.Message);
+            }
         }
-
+        //发送文件
         public override void SendFile(string ipaddress)
         {
             string filePath = null;
@@ -216,9 +250,9 @@ namespace Server
                 dataFileName.CopyTo(data,2);
                 buffer.CopyTo(data, dataHeadLen);
                 //发送
-                len = clientsDictionary[ipaddress].Send(data);
+                len = clientsDictionary[ipaddress].clientSocket.Send(data);
                 info.Enqueue(string.Format("发送文件：返回值{0}", len));
-
+                //关闭
                 fsRead.Close();
             }
             catch(Exception ex)
@@ -227,6 +261,8 @@ namespace Server
             }
         }
     }
+
+
 
     #region 客户端抽象类 
 
@@ -251,8 +287,10 @@ namespace Server
         public abstract void Connect(string ip,int port);
         //接受
         public abstract void Reciving(object obj);
-        //发送
-        public abstract void Send(string msg);
+        //发送文本
+        public abstract void SendMsg(string msg);
+        //发送软件信息,版本
+        public abstract void SendPdtInfo(string pdtName,string Version);
     }
 
     #endregion
@@ -286,19 +324,26 @@ namespace Server
                 MessageBox.Show("连接失败");
             }
         }
-
-        public override void Send(string msg)
+        //发送产品名称和版本
+        public override void SendPdtInfo(string pdtName, string Version)
         {
-            tcpClient.Send(Encoding.Default.GetBytes(msg));
+            byte[] type = Encoding.Default.GetBytes("H");
+            byte[] name = Encoding.Default.GetBytes(pdtName);
+            byte[] version = Encoding.Default.GetBytes(Version);
+            byte[] sendData = new byte[2+name.Length+version.Length];
+            int len = name.Length + 2;
+            type.CopyTo(sendData,0);
+            sendData[1] = (byte)len;
+            name.CopyTo(sendData, 2);
+            version.CopyTo(sendData,len);
+            tcpClient.Send(sendData);
         }
-
-        public string GetASCII(byte data)
+        //发送
+        public override void SendMsg(string msg)
         {
-            byte[] newdata = new byte[1];
-            newdata[0] = (byte)(Convert.ToInt32(data));
-            return Encoding.ASCII.GetString(newdata);
+            tcpClient.Send(Encoding.Default.GetBytes("M"+msg));
         }
-
+        //接受
         public override void Reciving(object obj)
         {
             while (true)
@@ -324,7 +369,7 @@ namespace Server
 
                 else
                 {
-                    string str = GetASCII(revBuffer[0]);
+                    string str = TypeChange.GetASCII(revBuffer[0]);
                     switch (str)
                     {
                         //Message
@@ -344,11 +389,9 @@ namespace Server
                                 fswrite.Write(revBuffer, revBuffer[1], length - revBuffer[1]);
 
                                 fswrite.Close();
-                            }
-                             
+                            }                             
                             break;
-                    }
-                    
+                    }                    
                 }
             }
         }
