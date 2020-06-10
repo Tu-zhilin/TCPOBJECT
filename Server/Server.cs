@@ -87,5 +87,11 @@ namespace Server
                 listBox1.Items.Add(pdt.server.info.Dequeue());
             }
         }
+
+        //加载按钮
+        private void Load_Click(object sender, EventArgs e)
+        {
+            pdt.LoadData();
+        }
     }
 }

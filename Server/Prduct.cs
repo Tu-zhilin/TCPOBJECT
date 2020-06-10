@@ -23,5 +23,11 @@ namespace Server
             client = new TestClient();
             config = new Config("SoftInfo");
         }
+
+        //加载产品信息
+        public void LoadData()
+        {
+            ListviewOper.LoadSoftInfo(factor.myTabPage.dictionary["SoftVersion"], config.ReadNode());
+        }
     }
 }

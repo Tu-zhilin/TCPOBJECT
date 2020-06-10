@@ -70,7 +70,7 @@
             // 
             // SendText
             // 
-            this.SendText.Location = new System.Drawing.Point(29, 71);
+            this.SendText.Location = new System.Drawing.Point(29, 65);
             this.SendText.Name = "SendText";
             this.SendText.Size = new System.Drawing.Size(75, 23);
             this.SendText.TabIndex = 0;
@@ -80,7 +80,7 @@
             // 
             // SendFile
             // 
-            this.SendFile.Location = new System.Drawing.Point(29, 34);
+            this.SendFile.Location = new System.Drawing.Point(29, 28);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
             this.SendFile.TabIndex = 1;
@@ -254,7 +254,7 @@
             // 
             // TestWindow
             // 
-            this.TestWindow.Location = new System.Drawing.Point(135, 34);
+            this.TestWindow.Location = new System.Drawing.Point(135, 28);
             this.TestWindow.Name = "TestWindow";
             this.TestWindow.Size = new System.Drawing.Size(75, 23);
             this.TestWindow.TabIndex = 2;
@@ -308,6 +308,7 @@
             this.Load.TabIndex = 4;
             this.Load.Text = "加载";
             this.Load.UseVisualStyleBackColor = true;
+            this.Load.Click += new System.EventHandler(this.Load_Click);
             // 
             // pdtName
             // 
