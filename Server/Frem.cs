@@ -13,21 +13,19 @@ namespace Server
 {
     public partial class Frem : Form
     {
+        string sip;
         Product pdt;
-        public Frem()
+        public Frem(string sip)
         {
+            this.sip = sip;
             pdt = new Product();
             InitializeComponent();
             timer1.Start();
+            Sip.Text = sip;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            while (pdt.server.info.Count != 0)
-            {
-                listBox1.Items.Add(pdt.server.info.Dequeue());
-            }
-
             while (pdt.client.info.Count != 0)
             {
                 listBox2.Items.Add(pdt.client.info.Dequeue());
@@ -45,24 +43,18 @@ namespace Server
         {
             if (pdt.client.Connect(Sip.Text, int.Parse(Sport.Text)))
             {
-                Cip.Text = pdt.client.IpEndPort;
-                pdt.client.SendPdtInfo("五菱CTF28E", "V1.1.1");
+                //pdt.client.SendPdtInfo("五菱CTF28E", "V1.1.1");
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            pdt.client.SendPdtInfo("五菱CTF28E","V1.1.1");
+            pdt.client.SendPdtInfo(textBox2.Text,textBox3.Text);
         }
 
         private void Ssend_Click(object sender, EventArgs e)
         {
-            pdt.server.SendMsg(Cip.Text,"服务器发送一个消息");
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            pdt.server.SendFile(Cip.Text);
+            pdt.client.SendMsg(textBox1.Text);
         }
     }
 }

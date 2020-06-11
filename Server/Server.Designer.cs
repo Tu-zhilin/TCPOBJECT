@@ -47,7 +47,6 @@
             this.SoftVersion = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ProductName = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.SendWord = new System.Windows.Forms.TextBox();
             this.TestWindow = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -64,13 +63,12 @@
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // SendText
             // 
-            this.SendText.Location = new System.Drawing.Point(29, 65);
+            this.SendText.Location = new System.Drawing.Point(1109, 490);
             this.SendText.Name = "SendText";
             this.SendText.Size = new System.Drawing.Size(75, 23);
             this.SendText.TabIndex = 0;
@@ -80,7 +78,7 @@
             // 
             // SendFile
             // 
-            this.SendFile.Location = new System.Drawing.Point(29, 28);
+            this.SendFile.Location = new System.Drawing.Point(911, 425);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
             this.SendFile.TabIndex = 1;
@@ -239,30 +237,17 @@
             this.ProductName.Size = new System.Drawing.Size(146, 21);
             this.ProductName.TabIndex = 2;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.SendWord);
-            this.groupBox3.Controls.Add(this.TestWindow);
-            this.groupBox3.Controls.Add(this.SendFile);
-            this.groupBox3.Controls.Add(this.SendText);
-            this.groupBox3.Location = new System.Drawing.Point(789, 385);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(221, 136);
-            this.groupBox3.TabIndex = 8;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "手动操作";
-            // 
             // SendWord
             // 
-            this.SendWord.Location = new System.Drawing.Point(29, 106);
+            this.SendWord.Location = new System.Drawing.Point(789, 491);
             this.SendWord.Name = "SendWord";
-            this.SendWord.Size = new System.Drawing.Size(181, 21);
+            this.SendWord.Size = new System.Drawing.Size(312, 21);
             this.SendWord.TabIndex = 3;
             this.SendWord.Text = "向客户端发送一条信息";
             // 
             // TestWindow
             // 
-            this.TestWindow.Location = new System.Drawing.Point(135, 28);
+            this.TestWindow.Location = new System.Drawing.Point(806, 425);
             this.TestWindow.Name = "TestWindow";
             this.TestWindow.Size = new System.Drawing.Size(75, 23);
             this.TestWindow.TabIndex = 2;
@@ -296,14 +281,14 @@
             this.groupBox4.Controls.Add(this.Load);
             this.groupBox4.Location = new System.Drawing.Point(1016, 270);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(174, 251);
+            this.groupBox4.Size = new System.Drawing.Size(174, 203);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "XML操作";
             // 
             // Dele
             // 
-            this.Dele.Location = new System.Drawing.Point(10, 186);
+            this.Dele.Location = new System.Drawing.Point(10, 131);
             this.Dele.Name = "Dele";
             this.Dele.Size = new System.Drawing.Size(75, 23);
             this.Dele.TabIndex = 12;
@@ -313,7 +298,7 @@
             // 
             // Change
             // 
-            this.Change.Location = new System.Drawing.Point(93, 186);
+            this.Change.Location = new System.Drawing.Point(93, 131);
             this.Change.Name = "Change";
             this.Change.Size = new System.Drawing.Size(75, 23);
             this.Change.TabIndex = 11;
@@ -323,7 +308,7 @@
             // 
             // Add
             // 
-            this.Add.Location = new System.Drawing.Point(10, 219);
+            this.Add.Location = new System.Drawing.Point(10, 164);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(75, 23);
             this.Add.TabIndex = 10;
@@ -365,7 +350,7 @@
             // 
             // Load
             // 
-            this.Load.Location = new System.Drawing.Point(93, 219);
+            this.Load.Location = new System.Drawing.Point(93, 164);
             this.Load.Name = "Load";
             this.Load.Size = new System.Drawing.Size(75, 23);
             this.Load.TabIndex = 4;
@@ -378,25 +363,27 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1196, 533);
+            this.Controls.Add(this.SendWord);
             this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.TestWindow);
             this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.SendFile);
+            this.Controls.Add(this.SendText);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.xxxxx);
             this.Controls.Add(this.groupBox1);
             this.Name = "Server";
-            this.Text = "客户端";
+            this.Text = "服务器";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.xxxxx.ResumeLayout(false);
             this.xxxxx.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -416,7 +403,6 @@
         private System.Windows.Forms.TextBox SoftVersion;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox ProductName;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox ClientSoftVer;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox ClientPdtType;

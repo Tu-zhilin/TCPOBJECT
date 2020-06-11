@@ -20,7 +20,7 @@ namespace Server
 
         public Product()
         {
-            //softDic = new Dictionary<string, string>();
+            //server.softDic = new Dictionary<string, string>();
             factor = new ServerFactory();
             server = new TestService(factor.myTabPage.dictionary["Device"]);
             client = new TestClient();

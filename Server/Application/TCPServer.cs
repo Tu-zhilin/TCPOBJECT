@@ -51,6 +51,7 @@ namespace Server
 
         public TCPServer(ListView listview)
         {
+            softDic = new Dictionary<string, string>();
             GetIPandPort();
             this.listview = listview;
             clientsDictionary = new Dictionary<string, ProductInfo>();
@@ -375,6 +376,7 @@ namespace Server
                 revThread.IsBackground = true;
                 revThread.TrySetApartmentState(ApartmentState.STA);
                 revThread.Start();
+                info.Enqueue("连接成功");
             }
             catch (Exception ex)
             {
@@ -447,6 +449,8 @@ namespace Server
                                     if (MessageBox.Show(updataInfo, "更新提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
                                     {
                                         SendReq("请求下载最新版本软件");
+                                        tcpClient.Close();
+                                        tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                                     }
                                 }
                                 else

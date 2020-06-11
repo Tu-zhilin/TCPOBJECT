@@ -38,6 +38,7 @@ namespace Server
             ServerIp.Text = pdt.server.localIP;
             ServerPort.Text = pdt.server.localPort.ToString();
             pdt.server.ServerSetting(pdt.server.localIP, pdt.server.localPort, 10);
+            pdt.LoadData();
         }
 
         //设备Listview事件
@@ -64,7 +65,7 @@ namespace Server
         //测试窗口
         private void TestWindow_Click(object sender, EventArgs e)
         {
-            Form form = new Frem();
+            Form form = new Frem(ServerIp.Text);
             form.Show();
         }
 
@@ -109,7 +110,7 @@ namespace Server
                 if (pdt.config.AddChileNode(pdtName.Text, pdtVer.Text))
                 {
                     ListviewOper.Insert_Info(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtName.Text, pdtVer.Text);
-                    pdt.server.softDic.Add(ProductName.Text, pdtVer.Text);
+                    pdt.server.softDic.Add(pdtName.Text, pdtVer.Text);
                 }
             }
             catch (Exception ex)
