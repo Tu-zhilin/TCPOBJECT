@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Template;
+using System.Threading;
 
 namespace Server
 {
     public partial class Server : Form
     {
+        bool Flag = false;
         Product pdt;
         TabControl tabControl;
+        delegate void Action();
+        Action action;
+
         public Server()
         {
             pdt = new Product();
@@ -22,7 +27,8 @@ namespace Server
             InitializeComponent();
             this.Controls.Add(tabControl);
             BindEvent();
-            timer1.Start();
+            action = new Action(ServerOpen.PerformClick);
+            timer1.Enabled = true;
         }
 
         //事件绑定
@@ -90,6 +96,11 @@ namespace Server
         //定时器
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (!Flag)
+            {
+                Flag = true;
+                this.Invoke(action);
+            }
             while (pdt.server.info.Count != 0)
             {
                 listBox1.Items.Add(pdt.server.info.Dequeue());
