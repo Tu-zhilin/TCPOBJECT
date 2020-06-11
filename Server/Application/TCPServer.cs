@@ -449,6 +449,9 @@ namespace Server
                                     if (MessageBox.Show(updataInfo, "更新提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
                                     {
                                         SendReq("请求下载最新版本软件");
+                                    }
+                                    else
+                                    {
                                         tcpClient.Close();
                                         tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                                     }
