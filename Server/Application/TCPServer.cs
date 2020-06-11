@@ -455,7 +455,7 @@ namespace Server
                                         tcpClient.Close();
                                         tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                                     }
-                                }
+                                }//
                                 else
                                 {
                                     MessageBox.Show("已是最新版本，无需更新","更新提示");
