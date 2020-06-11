@@ -18,6 +18,14 @@ namespace Server
 
     public abstract class TCPServer
     {
+        public enum Type
+        {
+            T = 84,
+            R = 82,
+            H = 72,
+            M = 77,
+            F = 70
+        }
         public class ProductInfo
         {
             //客户端套接字
@@ -102,6 +110,7 @@ namespace Server
 
         }
 
+        //连接配置
         public override void ServerSetting(string ipaddress, int point, int MaxListener)
         {
             if (serverSocket != null && serverSocket.Connected)
@@ -136,6 +145,7 @@ namespace Server
 
         }
 
+        //监听
         public override void Listenning(object obj)
         {
             while (true)
@@ -154,6 +164,7 @@ namespace Server
                 thread.Start(clientSocket);
             }
         }
+
         //接收
         public override void Receiving(object obj)
         {
@@ -237,6 +248,7 @@ namespace Server
                 }
             }
         }
+
         //发送更新信息
         public override void SendUpdataInfo(string ipaddress, string msg)
         {
@@ -250,6 +262,7 @@ namespace Server
                 info.Enqueue(ex.Message);
             }
         }
+
         //发送文字
         public override void SendMsg(string ipaddress, string msg)
         {
@@ -263,16 +276,35 @@ namespace Server
                 info.Enqueue(ex.Message);
             }
         }
+
         //自动选择文件发送
         public override void SendFile(string ipaddress, string path)
         {
             //这里需要跟下边抽出一个相同的函数使用
         }
+
         //发送文件
         public override void SendFile(string ipaddress)
         {
+            //发送缓存大小
+            int SendBufferLength = 65536;
+            //每次发送字节  开头两个字节用于校验
+            int SendLength = SendBufferLength - 2;
+            //发送的字节块
+            int DataBlock = 0;
+            //文件地址
             string filePath = null;
+            //文件名字
             string fileName = null;
+            //接收ACK缓存
+            byte[] revBuffer = new byte[512];
+            //发送数据缓存
+            byte[] sendBuffer = new byte[SendLength];
+            //文件数据缓存
+            byte[] buffer;
+            //文件流
+            FileStream fsRead;
+            //文件窗体对象
             OpenFileDialog openFile = new OpenFileDialog();
 
             try
@@ -282,11 +314,13 @@ namespace Server
                 {
                     filePath = openFile.FileName;
                     fileName = openFile.SafeFileName;
-                 }
-                 //读取文件
-                FileStream fsRead = new FileStream(filePath, FileMode.Open);
+                }
+                //读取文件
+                fsRead = new FileStream(filePath, FileMode.Open);
+                //数据长度
                 int datalength = (int)fsRead.Length;
-                byte[] buffer = new byte[datalength];
+                buffer = new byte[datalength];
+                //将数据读取到Buffer缓存里面
                 int len = fsRead.Read(buffer, 0, datalength);
                 //确保读取全部字节
                 if (!(len == datalength))
@@ -294,22 +328,73 @@ namespace Server
                     info.Enqueue("读取文件异常");
                     return;
                 }
-                //拼接发送类型 头字节 文件名字 数据
+                //1.拼接发送类型 数据块个数 文件名字 
+                //2.然后发送数据块等待客户端回应ACK,校验
+                //3.处理超时等待
+
+                //文件名字
                 byte[] dataFileName = Encoding.Default.GetBytes(fileName);
-                int dataHeadLen = dataFileName.Length + 2;
-                byte[] data = new byte[dataHeadLen + datalength];
-                byte[] type = Encoding.Default.GetBytes("F");
-                type.CopyTo(data,0);
-                data[1] = (byte)dataHeadLen;
-                dataFileName.CopyTo(data,2);
-                buffer.CopyTo(data, dataHeadLen);
-                //发送
+                //计算数据块
+                if (datalength % (SendLength) == 0)
+                    DataBlock = datalength / (SendLength);
+                else
+                    DataBlock = datalength / (SendLength) + 1;
+                //发送类型+数据块
+                byte[] data = new byte[2 + dataFileName.Length];
+                data[0] = (byte)Type.F;
+                data[1] = (byte)DataBlock;
+                dataFileName.CopyTo(data, 2);
                 len = clientsDictionary[ipaddress].clientSocket.Send(data);
-                info.Enqueue(string.Format("发送文件：返回值{0}", len));
-                //关闭
+                //设定一个跟踪标识
+                int number = 0;
+                //发送数据块
+                while (DataBlock != 0)
+                {
+                    //清空缓存
+                    revBuffer = new byte[512];
+                    //等待应答
+                    clientsDictionary[ipaddress].clientSocket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                    //应答成功
+                    if (revBuffer[0] == 1)
+                    {
+                        //先清空数据块
+                        sendBuffer = new byte[SendBufferLength];
+                        //当数据块>=1024*1024的时候
+                        if (datalength >= SendLength)
+                        {
+                            Array.Copy(buffer, number, sendBuffer, 2, SendLength);
+                            //高8位
+                            sendBuffer[0] = (byte)(SendBufferLength >> 8);
+                            //低8位
+                            sendBuffer[1] = (byte)(SendBufferLength & 0x0F);
+                            len = clientsDictionary[ipaddress].clientSocket.Send(sendBuffer);
+                            number += (SendLength);
+                            datalength -= (SendLength);
+                            DataBlock--;
+                        }
+                        //当数据块<1024*1024的时候
+                        else
+                        {
+                            Array.Copy(buffer, number, sendBuffer, 2, datalength);
+                            //高8位
+                            sendBuffer[0] = (byte)((datalength+2) >> 8);
+                            //低8位
+                            sendBuffer[1] = (byte)((datalength + 2) & 0x0F);
+                            len = clientsDictionary[ipaddress].clientSocket.Send(sendBuffer);
+                            number += datalength;
+                            datalength -= datalength;
+                            DataBlock--;
+                        }
+                    }
+                    //应答失败 再次发送数据
+                    else
+                    {
+                        len = clientsDictionary[ipaddress].clientSocket.Send(sendBuffer);
+                    }
+                }
                 fsRead.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 info.Enqueue(ex.Message);
             }
@@ -417,7 +502,7 @@ namespace Server
             while (true)
             {
                 int length = 0;
-                byte[] revBuffer = new byte[40000000];
+                byte[] revBuffer = new byte[65536];
                 try
                 {
                     //Recive函数会阻塞,直到收到信息为止
@@ -471,15 +556,27 @@ namespace Server
                         //File
                         case "F":
                             {
-
-                                string pathName = Encoding.Default.GetString(revBuffer,2,revBuffer[1]-2);
+                                string pathName = Encoding.Default.GetString(revBuffer,2,length - 2);
                                 info.Enqueue(pathName);
                                 if (File.Exists(pathName))
                                     File.Delete(pathName);
                                 FileStream fswrite = new FileStream(pathName,FileMode.Append);
-
-                                fswrite.Write(revBuffer, revBuffer[1], length - revBuffer[1]);
-
+                                int DataBlock = revBuffer[1];
+                                //发送1请求数据开始传送
+                                tcpClient.Send(new byte[1] {(byte)1});
+                                while (DataBlock != 0)
+                                {
+                                    length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                                    //数据字节匹配(后面应该进一步改成校验码)
+                                    if (length == (int)((revBuffer[0] << 8) + revBuffer[1]))
+                                    {
+                                        fswrite.Write(revBuffer, 2, length - 2);
+                                        DataBlock--;
+                                        tcpClient.Send(new byte[1] { (byte)1 });
+                                    }
+                                    else
+                                        tcpClient.Send(new byte[1] { (byte)0 });
+                                }
                                 fswrite.Close();
                             }
                             tcpClient.Close();
