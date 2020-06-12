@@ -328,9 +328,6 @@ namespace Server
                     info.Enqueue("读取文件异常");
                     return;
                 }
-                //1.拼接发送类型 数据块个数 文件名字 
-                //2.然后发送数据块等待客户端回应ACK,校验
-                //3.处理超时等待
 
                 //文件名字
                 byte[] dataFileName = Encoding.Default.GetBytes(fileName);
@@ -340,11 +337,13 @@ namespace Server
                 else
                     DataBlock = datalength / (SendLength) + 1;
                 //发送类型+数据块
-                //TOdo:这里代码块要加大
-                byte[] data = new byte[2 + dataFileName.Length];
+                byte[] data = new byte[3 + dataFileName.Length];
                 data[0] = (byte)Type.F;
-                data[1] = (byte)DataBlock;
-                dataFileName.CopyTo(data, 2);
+                //高8
+                data[1] = (byte)(DataBlock >> 8);
+                //低8
+                data[2] = (byte)(DataBlock & 0xFF);
+                dataFileName.CopyTo(data, 3);
                 len = clientsDictionary[ipaddress].clientSocket.Send(data);
                 //设定一个跟踪标识
                 int number = 0;
@@ -356,9 +355,16 @@ namespace Server
                     //清空缓存
                     revBuffer = new byte[512];
                     //等待应答
-                    clientsDictionary[ipaddress].clientSocket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                    len = clientsDictionary[ipaddress].clientSocket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
                     //应答成功
                     info.Enqueue(string.Format("接收应答:{0}", revBuffer[0]));
+                    //防止速度太快
+                    Thread.Sleep(5);
+                    if (len <= 0)
+                    {
+                        info.Enqueue("客户端 " + ipaddress + " 退出");
+                        return;
+                    }
                     if (revBuffer[0] == 1)
                     {
                         //应答成功了代码块-1;
@@ -379,7 +385,6 @@ namespace Server
                                 info.Enqueue(string.Format("尝试发送字节:{0} 代码块:{1}", SendLength, DataBlock));
                                 number += (SendLength);
                                 datalength -= (SendLength);
-                                //DataBlock--;
                             }
                             //当数据块<1024*1024的时候
                             else
@@ -395,7 +400,6 @@ namespace Server
                                 info.Enqueue(string.Format("尝试发送字节:{0} 代码块:{1}", datalength + 2, DataBlock));
                                 number += datalength;
                                 datalength -= datalength;
-                                //DataBlock--;
                             }
                         }
                     }
@@ -422,6 +426,16 @@ namespace Server
 
     public abstract class TCPClient
     {
+        //发送类型
+        public enum Type
+        {
+            T = 84,
+            R = 82,
+            H = 72,
+            M = 77,
+            F = 70
+        }
+
         //客户端套接字
         public Socket tcpClient;
         //接收
@@ -430,6 +444,9 @@ namespace Server
         public Queue<string> info;
         //地址端口号
         public string IpEndPort;
+        //委托
+        public delegate void Action(int data);
+        public event Action ChangeHandle;
 
         public TCPClient()
         {
@@ -488,12 +505,13 @@ namespace Server
         //发送产品名称和版本
         public override void SendPdtInfo(string pdtName, string Version)
         {
-            byte[] type = Encoding.Default.GetBytes("H");
+            //byte[] type = Encoding.Default.GetBytes("H");
             byte[] name = Encoding.Default.GetBytes(pdtName);
             byte[] version = Encoding.Default.GetBytes(Version);
             byte[] sendData = new byte[2+name.Length+version.Length];
             int len = name.Length + 2;
-            type.CopyTo(sendData,0);
+            //type.CopyTo(sendData,0);
+            sendData[0] = (byte)Type.H;
             sendData[1] = (byte)len;
             name.CopyTo(sendData, 2);
             version.CopyTo(sendData,len);
@@ -509,6 +527,48 @@ namespace Server
         public override void SendReq(string msg)
         {
             tcpClient.Send(Encoding.Default.GetBytes("R" + msg));
+        }
+
+        //这里想在线程里面再接收一个线程  需要解决传参问题
+        public void ReciveData(object obj,Socket tcpClient,byte[] revBuffer,int length)
+        {
+            //string pathName = Encoding.Default.GetString(revBuffer, 3, length - 3);
+            //info.Enqueue(pathName);
+            //if (File.Exists(pathName))
+            //    File.Delete(pathName);
+            //FileStream fswrite = new FileStream(pathName, FileMode.Append);
+            //int DataBlock = (revBuffer[1] << 8) + revBuffer[2];
+            ////发送1请求数据开始传送
+            //tcpClient.Send(new byte[1] { (byte)1 });
+            //while (DataBlock != 0)
+            //{
+
+            //    length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+            //    //防止速度太快
+            //    Thread.Sleep(10);
+            //    if (length <= 0)
+            //    {
+            //        info.Enqueue("服务器退出");
+            //        return;
+            //    }
+            //    //数据字节匹配(后面应该进一步改成校验码)
+            //    if (length == (int)((revBuffer[0] << 8) + revBuffer[1]))
+            //    {
+            //        fswrite.Write(revBuffer, 2, length - 2);
+            //        tcpClient.Send(new byte[1] { (byte)1 });
+            //        info.Enqueue(string.Format(string.Format("接收代码块成功:{0}", DataBlock)));
+            //        DataBlock--;
+            //    }
+            //    else
+            //    {
+            //        tcpClient.Send(new byte[1] { (byte)0 });
+            //        info.Enqueue(string.Format(string.Format("接收代码块失败:{0}", DataBlock)));
+            //    }
+            //}
+            //info.Enqueue("接收成功");
+            //fswrite.Close();
+            //tcpClient.Close();
+            //tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
         }
 
         //接受
@@ -555,7 +615,7 @@ namespace Server
                                         tcpClient.Close();
                                         tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                                     }
-                                }//
+                                }
                                 else
                                 {
                                     MessageBox.Show("已是最新版本，无需更新","更新提示");
@@ -570,18 +630,30 @@ namespace Server
                             break;
                         //File
                         case "F":
-                            {
-                                string pathName = Encoding.Default.GetString(revBuffer,2,length - 2);
+                            {                               
+                                string pathName = Encoding.Default.GetString(revBuffer, 3, length - 3);
                                 info.Enqueue(pathName);
                                 if (File.Exists(pathName))
                                     File.Delete(pathName);
-                                FileStream fswrite = new FileStream(pathName,FileMode.Append);
-                                int DataBlock = revBuffer[1];
+                                FileStream fswrite = new FileStream(pathName, FileMode.Append);
+                                int DataBlock = (revBuffer[1] << 8) + revBuffer[2];
                                 //发送1请求数据开始传送
-                                tcpClient.Send(new byte[1] {(byte)1});
+                                tcpClient.Send(new byte[1] { (byte)1 });
+
+                                //Download formDownLoad = new Download(DataBlock);
+                                //formDownLoad.Show();
+                                //Thread.Sleep(2000);
+
                                 while (DataBlock != 0)
                                 {
                                     length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                                    //防止速度太快
+                                    Thread.Sleep(5);
+                                    if (length <= 0)
+                                    {
+                                        info.Enqueue("服务器退出");
+                                        return;
+                                    }
                                     //数据字节匹配(后面应该进一步改成校验码)
                                     if (length == (int)((revBuffer[0] << 8) + revBuffer[1]))
                                     {
@@ -589,6 +661,7 @@ namespace Server
                                         tcpClient.Send(new byte[1] { (byte)1 });
                                         info.Enqueue(string.Format(string.Format("接收代码块成功:{0}", DataBlock)));
                                         DataBlock--;
+                                       
                                     }
                                     else
                                     {

@@ -104,6 +104,7 @@ namespace Server
             while (pdt.server.info.Count != 0)
             {
                 listBox1.Items.Add(pdt.server.info.Dequeue());
+                listBox1.SelectedIndex = listBox1.Items.Count - 1;
             }
         }
 

@@ -49,6 +49,12 @@
   <ItemGroup>
     <Compile Include="Application\Controls.cs" />
     <Compile Include="Application\Config.cs" />
+    <Compile Include="Download.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Download.Designer.cs">
+      <DependentUpon>Download.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
       <DependentUpon>Server.cs</DependentUpon>
     </Compile>
     <Compile Include="Application\TypeChange.cs" />
+    <EmbeddedResource Include="Download.resx">
+      <DependentUpon>Download.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Frem.resx">
       <DependentUpon>Frem.cs</DependentUpon>
     </EmbeddedResource>

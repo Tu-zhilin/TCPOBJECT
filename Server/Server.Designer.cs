@@ -262,7 +262,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(1016, 20);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(174, 244);
+            this.listBox1.Size = new System.Drawing.Size(336, 244);
             this.listBox1.TabIndex = 9;
             // 
             // timer1
@@ -362,7 +362,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1196, 533);
+            this.ClientSize = new System.Drawing.Size(1364, 533);
             this.Controls.Add(this.SendWord);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.TestWindow);

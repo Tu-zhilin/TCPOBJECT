@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Server
 {
+
+    /// <summary>
+    /// 数据转换
+    /// </summary>
     public class TypeChange
     {
         //ASCII码转换
@@ -16,4 +20,6 @@ namespace Server
             return Encoding.ASCII.GetString(newdata);
         }
     }
+
+    
 }
