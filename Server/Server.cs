@@ -101,13 +101,16 @@ namespace Server
                 Flag = true;
                 this.Invoke(action);
             }
-            
+
             //这里会报错，待解决
-            //while (pdt.server.info.Count > 0)
-            //{
-            //    listBox1.Items.Add(pdt.server.info.Dequeue());
-            //    listBox1.SelectedIndex = listBox1.Items.Count - 1;
-            //}
+            while (pdt.server.info.Count > 0)
+            {
+                string str = null;
+                if ((str = pdt.server.info.Dequeue()) != null)
+                    listBox1.Items.Add(str);
+                if (listBox1.Items.Count > 0)
+                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
+            }
         }
 
         //加载按钮

@@ -375,7 +375,7 @@ namespace Server
                     //等待应答
                     len = clientsDictionary[ipaddress].clientSocket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
                     //应答成功
-                    info.Enqueue(string.Format("接收应答:{0}", revBuffer[0]));
+                    //info.Enqueue(string.Format("接收应答:{0}", revBuffer[0]));
                     //防止速度太快
                     Thread.Sleep(5);
                     if (len <= 0)
