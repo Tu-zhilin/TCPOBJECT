@@ -77,9 +77,9 @@ namespace Server
         //产品信息存储
         public Dictionary<string, string> softDic;
         //发送缓存大小
-        public int SendBufferLength = (int)0xFFFF;
+        public int SendBufferLength = (int)0xFFFFFF;
         //表示字节数(F+校验数据字节)
-        public int PreDataByte = 3;
+        public int PreDataByte = 4;
         //每次发送字节  PreDataByte用于校验所以要去掉
         public int SendLength { get { return SendBufferLength - PreDataByte; } }
         //表示字节数(F+校验数据字节)
@@ -473,9 +473,9 @@ namespace Server
         //委托
         public delegate void Action(int data);
         //每次最多接收的字节
-        public int RecvDataByte = (int)0xFFFF;
+        public int RecvDataByte = (int)0xFFFFFF;
         //表示字节数(F+校验数据字节)
-        public int PreDataByte = 3;
+        public int PreDataByte = 4;
         //表示字节数(校验数据字节)
          public int DataByte { get { return PreDataByte - 1; } }
         //Server IPaddress
@@ -629,11 +629,11 @@ namespace Server
                                         Connect(socket, ServerIPAddress, ServerPort);
                                         SendReq(socket, "请求下载最新版本软件");
                                     }
-                                    //else
-                                    //{
+                                    else
+                                    {
                                         //tcpClient.Close();
                                         //tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-                                    //}
+                                    }
                                 }
                                 else
                                 {
