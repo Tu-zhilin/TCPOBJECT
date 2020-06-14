@@ -42,7 +42,7 @@ namespace Server
 
         private void Conn_Click(object sender, EventArgs e)
         {
-            if (pdt.client.Connect(Sip.Text, int.Parse(Sport.Text)))
+            if (pdt.client.Connect(pdt.client.tcpClient,Sip.Text, int.Parse(Sport.Text)))
             {
                 //pdt.client.SendPdtInfo("五菱CTF28E", "V1.1.1");
             }

@@ -100,6 +100,7 @@ namespace Server
             {
                 Flag = true;
                 this.Invoke(action);
+                ServerOpen.Enabled = false;
             }
 
             //这里会报错，待解决

@@ -68,7 +68,7 @@
             // 
             // SendText
             // 
-            this.SendText.Location = new System.Drawing.Point(1109, 490);
+            this.SendText.Location = new System.Drawing.Point(482, 549);
             this.SendText.Name = "SendText";
             this.SendText.Size = new System.Drawing.Size(75, 23);
             this.SendText.TabIndex = 0;
@@ -78,7 +78,8 @@
             // 
             // SendFile
             // 
-            this.SendFile.Location = new System.Drawing.Point(911, 425);
+            this.SendFile.Enabled = false;
+            this.SendFile.Location = new System.Drawing.Point(574, 549);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
             this.SendFile.TabIndex = 1;
@@ -239,19 +240,19 @@
             // 
             // SendWord
             // 
-            this.SendWord.Location = new System.Drawing.Point(789, 491);
+            this.SendWord.Location = new System.Drawing.Point(67, 549);
             this.SendWord.Name = "SendWord";
-            this.SendWord.Size = new System.Drawing.Size(312, 21);
+            this.SendWord.Size = new System.Drawing.Size(406, 21);
             this.SendWord.TabIndex = 3;
             this.SendWord.Text = "向客户端发送一条信息";
             // 
             // TestWindow
             // 
-            this.TestWindow.Location = new System.Drawing.Point(806, 425);
+            this.TestWindow.Location = new System.Drawing.Point(670, 549);
             this.TestWindow.Name = "TestWindow";
             this.TestWindow.Size = new System.Drawing.Size(75, 23);
             this.TestWindow.TabIndex = 2;
-            this.TestWindow.Text = "测试窗口";
+            this.TestWindow.Text = "客户端测试窗口";
             this.TestWindow.UseVisualStyleBackColor = true;
             this.TestWindow.Click += new System.EventHandler(this.TestWindow_Click);
             // 
@@ -262,7 +263,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(1016, 20);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(336, 244);
+            this.listBox1.Size = new System.Drawing.Size(447, 568);
             this.listBox1.TabIndex = 9;
             // 
             // timer1
@@ -280,16 +281,16 @@
             this.groupBox4.Controls.Add(this.pdtVer);
             this.groupBox4.Controls.Add(this.pdtName);
             this.groupBox4.Controls.Add(this.Load);
-            this.groupBox4.Location = new System.Drawing.Point(1016, 270);
+            this.groupBox4.Location = new System.Drawing.Point(789, 385);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(174, 203);
+            this.groupBox4.Size = new System.Drawing.Size(221, 203);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "XML操作";
             // 
             // Dele
             // 
-            this.Dele.Location = new System.Drawing.Point(10, 131);
+            this.Dele.Location = new System.Drawing.Point(22, 131);
             this.Dele.Name = "Dele";
             this.Dele.Size = new System.Drawing.Size(75, 23);
             this.Dele.TabIndex = 12;
@@ -299,7 +300,7 @@
             // 
             // Change
             // 
-            this.Change.Location = new System.Drawing.Point(93, 131);
+            this.Change.Location = new System.Drawing.Point(135, 131);
             this.Change.Name = "Change";
             this.Change.Size = new System.Drawing.Size(75, 23);
             this.Change.TabIndex = 11;
@@ -309,7 +310,7 @@
             // 
             // Add
             // 
-            this.Add.Location = new System.Drawing.Point(10, 164);
+            this.Add.Location = new System.Drawing.Point(22, 164);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(75, 23);
             this.Add.TabIndex = 10;
@@ -339,19 +340,19 @@
             // 
             this.pdtVer.Location = new System.Drawing.Point(22, 94);
             this.pdtVer.Name = "pdtVer";
-            this.pdtVer.Size = new System.Drawing.Size(146, 21);
+            this.pdtVer.Size = new System.Drawing.Size(188, 21);
             this.pdtVer.TabIndex = 9;
             // 
             // pdtName
             // 
             this.pdtName.Location = new System.Drawing.Point(22, 48);
             this.pdtName.Name = "pdtName";
-            this.pdtName.Size = new System.Drawing.Size(146, 21);
+            this.pdtName.Size = new System.Drawing.Size(188, 21);
             this.pdtName.TabIndex = 8;
             // 
             // Load
             // 
-            this.Load.Location = new System.Drawing.Point(93, 164);
+            this.Load.Location = new System.Drawing.Point(135, 164);
             this.Load.Name = "Load";
             this.Load.Size = new System.Drawing.Size(75, 23);
             this.Load.TabIndex = 4;
@@ -363,7 +364,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1364, 533);
+            this.ClientSize = new System.Drawing.Size(1479, 604);
             this.Controls.Add(this.SendWord);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.TestWindow);
