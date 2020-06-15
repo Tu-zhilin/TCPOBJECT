@@ -471,7 +471,8 @@ namespace Server
         //地址端口号
         public string IpEndPort;
         //委托
-        public delegate void Action(int data);
+        public delegate void Action(Download form);
+        public event Action action;
         //每次最多接收的字节
         public int RecvDataByte = (int)0xFFFFFF;
         //表示字节数(F+校验数据字节)
@@ -529,8 +530,6 @@ namespace Server
             if (tcpClient != null && tcpClient.Connected)
             {
                 MessageBox.Show("已存在,断开连接，请重新连接");
-                //这一句可以禁用发送接收
-                //tcpClient.Shutdown(SocketShutdown.Both);
                 tcpClient.Close();
                 return false;
             }
@@ -556,15 +555,19 @@ namespace Server
                 return true;
             }
         }
+
+        public void ShowPrpgress()
+        {
+            
+        }
+
         //发送产品名称和版本
         public override void SendPdtInfo(string pdtName, string Version)
         {
-            //byte[] type = Encoding.Default.GetBytes("H");
             byte[] name = Encoding.Default.GetBytes(pdtName);
             byte[] version = Encoding.Default.GetBytes(Version);
             byte[] sendData = new byte[2+name.Length+version.Length];
             int len = name.Length + 2;
-            //type.CopyTo(sendData,0);
             sendData[0] = (byte)Type.H;
             sendData[1] = (byte)len;
             name.CopyTo(sendData, 2);
@@ -581,6 +584,15 @@ namespace Server
         public override void SendReq(Socket tcpClient, string msg)
         {
             tcpClient.Send(Encoding.Default.GetBytes("R" + msg));
+        }
+
+        public void Set(Download download)
+        {
+            Action handle = new Action(delegate
+            {
+                download = new Download(100);
+                download.Show();
+            });
         }
 
         //创建套接字去接收文件 
@@ -659,8 +671,8 @@ namespace Server
                         //File
                         case "F":
                             {
-                                try
-                                {
+                                //try
+                                //{
                                     int len = 0;
                                     int DataBlock = 0;
                                     string pathName = Encoding.Default.GetString(revBuffer, PreDataByte, length - PreDataByte);
@@ -673,17 +685,22 @@ namespace Server
                                     {
                                         DataBlock += revBuffer[i] << ((PreDataByte - 1 - i) * 8);
                                     }
+
+                                    //Download download =  new Download(DataBlock);
+                                    //new Thread((ThreadStart)delegate
+                                    //{
+                                    //    Application.Run(download);
+                                    //}).Start();
+                                    //Thread.Sleep(1000);
                                     //发送1请求数据开始传送
+
                                     tcpClient.Send(new byte[1] { (byte)1 });
                                     info.Enqueue("发送应答1");
-
-                                    //Download formDownLoad = new Download(DataBlock);
-                                    //formDownLoad.Show();
-                                    //Thread.Sleep(2000);
 
                                     while (DataBlock != 0)
                                     {
                                         len = 0;
+                                        download.Now = DataBlock;
                                         length = tcpClient.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
                                         //防止速度太快
                                         Thread.Sleep(5);
@@ -704,7 +721,6 @@ namespace Server
                                             tcpClient.Send(new byte[1] { (byte)1 });
                                             info.Enqueue(string.Format(string.Format("接收代码块成功:{0}", DataBlock)));
                                             DataBlock--;
-
                                         }
                                         else
                                         {
@@ -714,15 +730,15 @@ namespace Server
                                     }
                                     info.Enqueue("接收成功");
                                     fswrite.Close();
-                                }
-                                catch (Exception ex)
-                                {
-                                    throw new Exception(ex.Message);
-                                }
-                                finally
-                                {
-                                    tcpClient.Close();
-                                }
+                                //}
+                                //catch (Exception ex)
+                                //{
+                                //    throw new Exception(ex.Message);
+                                //}
+                                //finally
+                                //{
+                                //    tcpClient.Close();
+                                //}
                                 return;
                             }
                     }                    

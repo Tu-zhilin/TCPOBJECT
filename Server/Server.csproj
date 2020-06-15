@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Application\Controls.cs" />
     <Compile Include="Application\Config.cs" />
+    <Compile Include="Application\DownLiadProgres.cs" />
     <Compile Include="Download.cs">
       <SubType>Form</SubType>
     </Compile>

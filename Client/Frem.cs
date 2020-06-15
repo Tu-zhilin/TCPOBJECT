@@ -16,6 +16,8 @@ namespace Server
     {
         string sip;
         Product pdt;
+        public static Action action;
+
         public Frem()
         {
             pdt = new Product();

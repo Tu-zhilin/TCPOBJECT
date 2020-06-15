@@ -13,23 +13,24 @@ namespace Server
     public partial class Download : Form
     {
         private int BlockData;
-        public int Now = 0;
+        public int Now;
 
         public Download(int BlockData)
         {
-            this.BlockData = BlockData;
             InitializeComponent();
             Process.Maximum = BlockData;
+            this.BlockData = BlockData;
+            timer1.Start();
         }
 
-        public void Change(int data)
+        private void button1_Click(object sender, EventArgs e)
         {
-            Process.Value = BlockData - data;
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            Change(Now);
+            Process.Value = BlockData - Now;
         }
     }
 }

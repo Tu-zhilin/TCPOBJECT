@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
+using Server;
 
 namespace Server
 {
@@ -15,6 +16,7 @@ namespace Server
     {
         string sip;
         Product pdt;
+
         public Frem(string sip)
         {
             this.sip = sip;
@@ -23,6 +25,7 @@ namespace Server
             timer1.Start();
             Sip.Text = sip;
         }
+
 
         private void timer1_Tick(object sender, EventArgs e)
         {
