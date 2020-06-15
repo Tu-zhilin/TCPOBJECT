@@ -463,7 +463,7 @@ namespace Server
         }
 
         //客户端套接字
-        public Socket tcpClient;
+        public Socket Main_tcpClient;
         //接收
         //public Thread revThread;
         //信息
@@ -490,7 +490,7 @@ namespace Server
         public TCPClient()
         {
             info = new Queue<string>();
-            tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+            //Main_tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             threadDic = new Dictionary<Socket, Thread>();
         }
 
@@ -501,7 +501,7 @@ namespace Server
         }
 
         //连接服务器
-        public abstract bool Connect(Socket tcpClient,string ip,int port);
+        public abstract bool Connect(ref Socket tcpClient,string ip,int port);
         //接受
         public abstract void Reciving(object obj);
         //发送文本
@@ -519,7 +519,7 @@ namespace Server
     /// </summary>
     public class TestClient : TCPClient
     {
-        public override bool Connect(Socket tcpClient,string ip, int port)
+        public override bool Connect(ref Socket tcpClient,string ip, int port)
         {
             if (ServerIPAddress == null && ServerPort == -1)
                 GetServerIpendPort(ip, port);
@@ -529,28 +529,32 @@ namespace Server
             if (tcpClient != null && tcpClient.Connected)
             {
                 MessageBox.Show("已存在,断开连接，请重新连接");
+                //这一句可以禁用发送接收
+                //tcpClient.Shutdown(SocketShutdown.Both);
                 tcpClient.Close();
-                tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 return false;
             }
-
-            try
+            else
             {
-                tcpClient.Connect(this_ip, port);
-                IpEndPort = tcpClient.RemoteEndPoint.ToString();
-                Thread revThread = new Thread(new ParameterizedThreadStart(Reciving));
-                revThread.IsBackground = true;
-                revThread.TrySetApartmentState(ApartmentState.STA);
-                revThread.Start(tcpClient);
-                threadDic.Add(tcpClient, revThread);
-                info.Enqueue("连接成功");
+                try
+                {
+                    tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+                    tcpClient.Connect(this_ip, port);
+                    IpEndPort = tcpClient.RemoteEndPoint.ToString();
+                    Thread revThread = new Thread(new ParameterizedThreadStart(Reciving));
+                    revThread.IsBackground = true;
+                    revThread.TrySetApartmentState(ApartmentState.STA);
+                    revThread.Start(tcpClient);
+                    threadDic.Add(tcpClient, revThread);
+                    info.Enqueue("连接成功");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + " 连接失败");
+                    return false;
+                }
+                return true;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message+" 连接失败");
-                return false;
-            }
-            return true;
         }
         //发送产品名称和版本
         public override void SendPdtInfo(string pdtName, string Version)
@@ -565,12 +569,12 @@ namespace Server
             sendData[1] = (byte)len;
             name.CopyTo(sendData, 2);
             version.CopyTo(sendData,len);
-            tcpClient.Send(sendData);
+            Main_tcpClient.Send(sendData);
         }
         //发送文本
         public override void SendMsg(string msg)
         {
-            tcpClient.Send(Encoding.Default.GetBytes("M"+msg));
+            Main_tcpClient.Send(Encoding.Default.GetBytes("M"+msg));
         }
 
         //发送更新请求
@@ -625,8 +629,8 @@ namespace Server
                                     if (MessageBox.Show(updataInfo, "更新提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.OK)
                                     {
                                         //创建一个新的套接字去接收文件
-                                        Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-                                        Connect(socket, ServerIPAddress, ServerPort);
+                                        Socket socket = null; // = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+                                        Connect(ref socket, ServerIPAddress, ServerPort);
                                         SendReq(socket, "请求下载最新版本软件");
                                     }
                                     else
