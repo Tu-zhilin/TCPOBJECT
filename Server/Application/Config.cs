@@ -14,6 +14,7 @@ namespace Server
         {
             public string _Name;
             public string _Version;
+            public string _SoftName;
         }
 
         XmlTextReader reader;
@@ -60,7 +61,7 @@ namespace Server
         }
 
         //修改节点(1)代表修改名字  (2)代表修改版本号
-        public bool ChangeChildNode(string Name, string data, int index)
+        public bool ChangeChildNode(string Name, string Version, string SoftName)
         {
             try
             {
@@ -70,11 +71,8 @@ namespace Server
                 {
                     if (item.Attributes["Name"].Value == Name)
                     {
-                        if (index == 1)
-                            item.Attributes["Name"].Value = data;
-                        else if (index == 2)
-                            item.Attributes["Version"].Value = data;
-
+                        item.Attributes["Version"].Value = Version;
+                        item.Attributes["SoftName"].Value = SoftName;
                         break;
                     }
                 }
@@ -112,7 +110,7 @@ namespace Server
         }
 
         //插入节点
-        public bool AddChileNode(string Name, string Version)
+        public bool AddChileNode(string Name, string Version,string SoftName)
         {
             try
             {
@@ -120,6 +118,7 @@ namespace Server
                 XmlElement signal = xmlDoc.CreateElement("Product");
                 signal.SetAttribute("Name", Name);
                 signal.SetAttribute("Version", Version);
+                signal.SetAttribute("SoftName", SoftName);
                 xmlDoc.DocumentElement.AppendChild(signal);
                 xmlDoc.Save(Path);
                 return true;
@@ -146,6 +145,7 @@ namespace Server
                     Data data = new Data();
                     data._Name = reader.GetAttribute("Name");
                     data._Version = reader.GetAttribute("Version");
+                    data._SoftName = reader.GetAttribute("SoftName");
                     list.Add(data);
                 }
             }

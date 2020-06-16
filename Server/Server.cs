@@ -123,11 +123,17 @@ namespace Server
         //插入按钮
         private void Add_Click(object sender, EventArgs e)
         {
+
             try
             {
-                if (pdt.config.AddChileNode(pdtName.Text, pdtVer.Text))
+                if (pdt.server.softDic.ContainsKey(pdtName.Text))
                 {
-                    ListviewOper.Insert_Info(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtName.Text, pdtVer.Text);
+                    MessageBox.Show("该产品已存在");
+                    return;
+                }
+                if (pdt.config.AddChileNode(pdtName.Text, pdtVer.Text,softName.Text))
+                {
+                    ListviewOper.Insert_Info(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtName.Text, pdtVer.Text,softName.Text);
                     pdt.server.softDic.Add(pdtName.Text, pdtVer.Text);
                 }
             }
@@ -140,9 +146,9 @@ namespace Server
         //修改按钮
         private void Change_Click(object sender, EventArgs e)
         {
-            if (pdt.config.ChangeChildNode(ProductName.Text, pdtVer.Text, 2))
+            if (pdt.config.ChangeChildNode(ProductName.Text, pdtVer.Text,softName.Text))
             {
-                ListviewOper.ChangeData(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtVer.Text, 2);
+                ListviewOper.ChangeData(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtVer.Text,softName.Text);
                 pdt.server.softDic[ProductName.Text] = pdtVer.Text;
             }
         }

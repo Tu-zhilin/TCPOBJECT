@@ -31,6 +31,6 @@ namespace Server
         public void LoadData()
         {
             server.softDic = ListviewOper.LoadSoftInfo(factor.myTabPage.dictionary["SoftVersion"], config.ReadNode());
-        }//
+        }
     }
 }

@@ -60,6 +60,10 @@
             this.pdtVer = new System.Windows.Forms.TextBox();
             this.pdtName = new System.Windows.Forms.TextBox();
             this.Load = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.softName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pdtSoftname = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -193,7 +197,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.pdtSoftname);
             this.groupBox2.Controls.Add(this.SoftVersion);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.ProductName);
@@ -273,6 +279,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label8);
+            this.groupBox4.Controls.Add(this.softName);
             this.groupBox4.Controls.Add(this.Dele);
             this.groupBox4.Controls.Add(this.Change);
             this.groupBox4.Controls.Add(this.Add);
@@ -290,7 +298,7 @@
             // 
             // Dele
             // 
-            this.Dele.Location = new System.Drawing.Point(22, 131);
+            this.Dele.Location = new System.Drawing.Point(22, 140);
             this.Dele.Name = "Dele";
             this.Dele.Size = new System.Drawing.Size(75, 23);
             this.Dele.TabIndex = 12;
@@ -300,7 +308,7 @@
             // 
             // Change
             // 
-            this.Change.Location = new System.Drawing.Point(135, 131);
+            this.Change.Location = new System.Drawing.Point(135, 140);
             this.Change.Name = "Change";
             this.Change.Size = new System.Drawing.Size(75, 23);
             this.Change.TabIndex = 11;
@@ -310,7 +318,7 @@
             // 
             // Add
             // 
-            this.Add.Location = new System.Drawing.Point(22, 164);
+            this.Add.Location = new System.Drawing.Point(22, 173);
             this.Add.Name = "Add";
             this.Add.Size = new System.Drawing.Size(75, 23);
             this.Add.TabIndex = 10;
@@ -321,7 +329,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 77);
+            this.label7.Location = new System.Drawing.Point(8, 54);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 8;
@@ -330,7 +338,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 24);
+            this.label6.Location = new System.Drawing.Point(8, 16);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 8;
@@ -338,27 +346,60 @@
             // 
             // pdtVer
             // 
-            this.pdtVer.Location = new System.Drawing.Point(22, 94);
+            this.pdtVer.Location = new System.Drawing.Point(22, 70);
             this.pdtVer.Name = "pdtVer";
             this.pdtVer.Size = new System.Drawing.Size(188, 21);
             this.pdtVer.TabIndex = 9;
             // 
             // pdtName
             // 
-            this.pdtName.Location = new System.Drawing.Point(22, 48);
+            this.pdtName.Location = new System.Drawing.Point(22, 32);
             this.pdtName.Name = "pdtName";
             this.pdtName.Size = new System.Drawing.Size(188, 21);
             this.pdtName.TabIndex = 8;
             // 
             // Load
             // 
-            this.Load.Location = new System.Drawing.Point(135, 164);
+            this.Load.Location = new System.Drawing.Point(135, 173);
             this.Load.Name = "Load";
             this.Load.Size = new System.Drawing.Size(75, 23);
             this.Load.TabIndex = 4;
             this.Load.Text = "加载";
             this.Load.UseVisualStyleBackColor = true;
             this.Load.Click += new System.EventHandler(this.Load_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 97);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "软件名称";
+            // 
+            // softName
+            // 
+            this.softName.Location = new System.Drawing.Point(21, 113);
+            this.softName.Name = "softName";
+            this.softName.Size = new System.Drawing.Size(188, 21);
+            this.softName.TabIndex = 14;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 94);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "软件名称";
+            // 
+            // pdtSoftname
+            // 
+            this.pdtSoftname.Enabled = false;
+            this.pdtSoftname.Location = new System.Drawing.Point(68, 90);
+            this.pdtSoftname.Name = "pdtSoftname";
+            this.pdtSoftname.Size = new System.Drawing.Size(146, 21);
+            this.pdtSoftname.TabIndex = 16;
             // 
             // Server
             // 
@@ -422,5 +463,9 @@
         private System.Windows.Forms.TextBox pdtVer;
         private System.Windows.Forms.TextBox pdtName;
         private System.Windows.Forms.Button Load;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox softName;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox pdtSoftname;
     }
 }

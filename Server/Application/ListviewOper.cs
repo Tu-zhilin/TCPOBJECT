@@ -12,16 +12,12 @@ namespace Server
         private delegate void Action();
 
         //修改选中的上位机信息
-        public static void ChangeData(ListView list,string data,int index)
+        public static void ChangeData(ListView list,string Version,string SoftName)
         {
-            int i = 1;
             if (list.SelectedItems.Count > 0)
             {
-                if (index == 1)
-                    list.SelectedItems[0].Text = data;
-                else if(index == 2)
-                    list.SelectedItems[0].SubItems[1].Text = data;
-
+                list.SelectedItems[1].Text = Version;
+                list.SelectedItems[2].SubItems[1].Text = SoftName;
             }
             else
                 return;
@@ -42,6 +38,7 @@ namespace Server
                     listview.BeginUpdate();
                     lvi.Text = item._Name;
                     lvi.SubItems.Add(item._Version);
+                    lvi.SubItems.Add(item._SoftName);
                     listview.EndUpdate();
                     listview.Items.Add(lvi);
                     dic.Add(item._Name, item._Version);
@@ -106,7 +103,7 @@ namespace Server
         }
 
         //添加上位机信息
-        public static void Insert_Info(ListView listview,string name,string version)
+        public static void Insert_Info(ListView listview,string name,string version,string softname)
         {
             ListViewItem lvi = new ListViewItem();
             Action action = new Action(() =>
@@ -114,6 +111,7 @@ namespace Server
                 listview.BeginUpdate();
                 lvi.Text = name;
                 lvi.SubItems.Add(version);
+                lvi.SubItems.Add(softname);
                 listview.EndUpdate();
                 listview.Items.Add(lvi);
             });
