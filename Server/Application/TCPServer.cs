@@ -75,7 +75,7 @@ namespace Server
         //Listview
         public ListView listview;
         //产品信息存储
-        public Dictionary<string, string> softDic;
+        public Dictionary<string, Config.Data> softDic;
         //发送缓存大小
         public int SendBufferLength = (int)0xFFFFFF;
         //表示字节数(F+校验数据字节)
@@ -89,7 +89,7 @@ namespace Server
 
         public TCPServer(ListView listview)
         {
-            softDic = new Dictionary<string, string>();
+            softDic = new Dictionary<string, Config.Data>();
             GetIPandPort();
             this.listview = listview;
             clientsDictionary = new Dictionary<string, ProductInfo>();
@@ -268,7 +268,7 @@ namespace Server
                                     //添加进Listview
                                     ListviewOper.Change_Info(listview, ipadreess, clientsDictionary[ipadreess].PdtName, clientsDictionary[ipadreess].pdtVer);
                                     //TODO：如果版本一致，回复无需更新，如果不一致，发送需要更新
-                                    if (clientsDictionary[ipadreess].pdtVer != softDic[clientsDictionary[ipadreess].PdtName])
+                                    if (clientsDictionary[ipadreess].pdtVer != softDic[clientsDictionary[ipadreess].PdtName]._Version)
                                         SendUpdataInfo(ipadreess, "有最新版本,是否更新");
                                     else
 

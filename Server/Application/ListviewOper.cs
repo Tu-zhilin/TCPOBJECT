@@ -16,17 +16,17 @@ namespace Server
         {
             if (list.SelectedItems.Count > 0)
             {
-                list.SelectedItems[1].Text = Version;
-                list.SelectedItems[2].SubItems[1].Text = SoftName;
+                list.SelectedItems[0].SubItems[1].Text = Version;
+                list.SelectedItems[0].SubItems[2].Text = SoftName;
             }
             else
                 return;
         }
 
         //加载全部上位机信息
-        public static Dictionary<string,string> LoadSoftInfo(ListView listview,List<Config.Data> dataList)
+        public static Dictionary<string,Config.Data> LoadSoftInfo(ListView listview,List<Config.Data> dataList)
         {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
+            Dictionary<string, Config.Data> dic = new Dictionary<string, Config.Data>();
 
             Action action = new Action(() => {            
                 //先清空所有的信息
@@ -41,7 +41,7 @@ namespace Server
                     lvi.SubItems.Add(item._SoftName);
                     listview.EndUpdate();
                     listview.Items.Add(lvi);
-                    dic.Add(item._Name, item._Version);
+                    dic.Add(item._Name, item);
                 }
             });
 

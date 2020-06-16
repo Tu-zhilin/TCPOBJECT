@@ -395,9 +395,9 @@
             // 
             // pdtSoftname
             // 
-            this.pdtSoftname.Enabled = false;
             this.pdtSoftname.Location = new System.Drawing.Point(68, 90);
             this.pdtSoftname.Name = "pdtSoftname";
+            this.pdtSoftname.ReadOnly = true;
             this.pdtSoftname.Size = new System.Drawing.Size(146, 21);
             this.pdtSoftname.TabIndex = 16;
             // 

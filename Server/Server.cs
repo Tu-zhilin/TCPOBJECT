@@ -65,6 +65,7 @@ namespace Server
             {
                 ProductName.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[0].Text;
                 SoftVersion.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[1].Text;
+                pdtSoftname.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[2].Text;
             }
         }
 
@@ -133,8 +134,12 @@ namespace Server
                 }
                 if (pdt.config.AddChileNode(pdtName.Text, pdtVer.Text,softName.Text))
                 {
+                    Config.Data data = new Config.Data();
+                    data._Name = pdtName.Text;
+                    data._Version = pdtVer.Text;
+                    data._SoftName = softName.Text;
                     ListviewOper.Insert_Info(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtName.Text, pdtVer.Text,softName.Text);
-                    pdt.server.softDic.Add(pdtName.Text, pdtVer.Text);
+                    pdt.server.softDic.Add(pdtName.Text,data);
                 }
             }
             catch (Exception ex)
@@ -149,7 +154,8 @@ namespace Server
             if (pdt.config.ChangeChildNode(ProductName.Text, pdtVer.Text,softName.Text))
             {
                 ListviewOper.ChangeData(pdt.factor.myTabPage.dictionary["SoftVersion"], pdtVer.Text,softName.Text);
-                pdt.server.softDic[ProductName.Text] = pdtVer.Text;
+                pdt.server.softDic[ProductName.Text]._Version = pdtVer.Text;
+                pdt.server.softDic[ProductName.Text]._SoftName = softName.Text;
             }
         }
 
