@@ -33,13 +33,15 @@
             this.Sport = new System.Windows.Forms.TextBox();
             this.Sip = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.Conn = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.File = new System.Windows.Forms.RadioButton();
+            this.Directory = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +73,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.Directory);
+            this.groupBox2.Controls.Add(this.File);
             this.groupBox2.Controls.Add(this.textBox3);
             this.groupBox2.Controls.Add(this.textBox2);
             this.groupBox2.Controls.Add(this.textBox1);
@@ -87,13 +91,36 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "客户端";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(654, 250);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 21);
+            this.textBox3.TabIndex = 9;
+            this.textBox3.Text = "V1.1.1";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(654, 196);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 21);
+            this.textBox2.TabIndex = 8;
+            this.textBox2.Text = "五菱CTF28E";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(39, 382);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(510, 21);
+            this.textBox1.TabIndex = 7;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(649, 381);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(105, 23);
+            this.button1.Size = new System.Drawing.Size(121, 23);
             this.button1.TabIndex = 5;
-            this.button1.Text = "发送上位机信息";
+            this.button1.Text = "发送产品名字和版本";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -120,28 +147,27 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // textBox1
+            // File
             // 
-            this.textBox1.Location = new System.Drawing.Point(39, 382);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(510, 21);
-            this.textBox1.TabIndex = 7;
+            this.File.AutoSize = true;
+            this.File.Checked = true;
+            this.File.Location = new System.Drawing.Point(659, 307);
+            this.File.Name = "File";
+            this.File.Size = new System.Drawing.Size(47, 16);
+            this.File.TabIndex = 10;
+            this.File.TabStop = true;
+            this.File.Text = "文件";
+            this.File.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // Directory
             // 
-            this.textBox2.Location = new System.Drawing.Point(654, 196);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 8;
-            this.textBox2.Text = "五菱CTF28E";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(654, 250);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 9;
-            this.textBox3.Text = "V1.1.1";
+            this.Directory.AutoSize = true;
+            this.Directory.Location = new System.Drawing.Point(659, 338);
+            this.Directory.Name = "Directory";
+            this.Directory.Size = new System.Drawing.Size(59, 16);
+            this.Directory.TabIndex = 11;
+            this.Directory.Text = "文件夹";
+            this.Directory.UseVisualStyleBackColor = true;
             // 
             // Frem
             // 
@@ -169,6 +195,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.RadioButton Directory;
+        private System.Windows.Forms.RadioButton File;
     }
 }
 

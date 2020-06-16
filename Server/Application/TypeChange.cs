@@ -47,7 +47,39 @@ namespace Server
                 FilePath = openFile.FileName;
                 FileName = openFile.SafeFileName;
             }
+
+            if (FilePath == null)
+                return false;
             //读取文件
+            fsRead = new FileStream(FilePath, FileMode.Open);
+            //数据长度
+            Size = (int)fsRead.Length;
+            buffer = new byte[Size];
+            //将数据读取到Buffer缓存里面
+            int len = fsRead.Read(buffer, 0, Size);
+            //确保读取全部字节
+            if (!(len == Size))
+            {
+                fsRead.Close();
+                return false;
+            }
+            fsRead.Close();
+            return true;
+        }
+
+        /// <summary>
+        /// 读取文件大小,名字，地址,文件数据缓存
+        /// </summary>
+        public static bool GetFileData(ref string FileName, ref string FilePath, ref int Size, ref byte[] buffer,string FilefullPath,string Name)
+        {
+            //文件流
+            FileStream fsRead;
+
+            FilePath = FilefullPath;
+            FileName = Name;
+            //读取文件
+            if (FilePath == null || FilePath == "")
+                return false;
             fsRead = new FileStream(FilePath, FileMode.Open);
             //数据长度
             Size = (int)fsRead.Length;

@@ -53,6 +53,11 @@ namespace Server
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (File.Checked)
+                pdt.client.fileType = TCPClient.FileType.File;
+            else if (Directory.Checked)
+                pdt.client.fileType = TCPClient.FileType.Directory;
+
             pdt.client.SendPdtInfo(textBox2.Text,textBox3.Text);
         }
 

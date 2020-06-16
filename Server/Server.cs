@@ -89,7 +89,7 @@ namespace Server
         {
             if (pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems.Count > 0)
             {
-                pdt.server.SendFile(ClientIPendPort.Text);
+                pdt.server.SendDirectory(ClientIPendPort.Text);
             }
         }
 

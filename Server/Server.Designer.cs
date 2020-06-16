@@ -78,12 +78,11 @@
             // 
             // SendFile
             // 
-            this.SendFile.Enabled = false;
             this.SendFile.Location = new System.Drawing.Point(574, 549);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
             this.SendFile.TabIndex = 1;
-            this.SendFile.Text = "发送文件";
+            this.SendFile.Text = "发送文件夹";
             this.SendFile.UseVisualStyleBackColor = true;
             this.SendFile.Click += new System.EventHandler(this.SendFile_Click);
             // 
@@ -364,7 +363,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1479, 604);
+            this.ClientSize = new System.Drawing.Size(1364, 604);
             this.Controls.Add(this.SendWord);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.TestWindow);
