@@ -20,10 +20,9 @@ namespace Server
 
         public Product()
         {
-            //server.softDic = new Dictionary<string, string>();
             factor = new ServerFactory();
             server = new TestService(factor.myTabPage.dictionary["Device"]);
-            client = new TestClient();
+            client = new TestClient("五菱CTF28E","V1.1.1");
             config = new Config("SoftInfo");
         }
 

@@ -65,5 +65,11 @@ namespace Server
         {
             pdt.client.SendMsg(textBox1.Text);
         }
+
+        private void Frem_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            pdt.client.Main_tcpClient.Close();
+            this.Dispose();
+        }
     }
 }

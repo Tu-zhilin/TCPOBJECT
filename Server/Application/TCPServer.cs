@@ -55,6 +55,12 @@ namespace Server
             public byte[] buffer;
         }
 
+        //发送方式
+        public enum SendType
+        {
+            Manual = 0,
+            Auto = 1
+        }
 
         //服务端套接字
         public Socket serverSocket;
@@ -84,8 +90,10 @@ namespace Server
         public int SendLength { get { return SendBufferLength - PreDataByte; } }
         //表示字节数(F+校验数据字节)
         public int DataByte { get { return PreDataByte - 1; } }
-
-
+        //发送方式
+        public SendType sendType = SendType.Manual;
+        //文件库地址
+        public string FileDirPath = "Lab";
 
         public TCPServer(ListView listview)
         {
@@ -217,7 +225,7 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    info.Enqueue(string.Format("客户端{0}退出:{1}返回值{2}", ipadreess,ex.Message,length));
+                    info.Enqueue(string.Format("客户端{0}退出:返回值{1}", ipadreess,length));
                     clientsDictionary.Remove(ipadreess);
                     ListviewOper.Dele_Info(listview, ipadreess);
                     return;
@@ -231,12 +239,6 @@ namespace Server
                     return;
                 }
 
-                else if (length == -1)
-                {
-                    info.Enqueue(ipadreess + "异常退出");
-                    return;
-                }
-
                 else
                 {
                     string str = TypeChange.GetASCII(revBuffer[0]);
@@ -246,9 +248,15 @@ namespace Server
                         case "R":
                             {
                                 //应该去版本库里面找改上位机最新版本发送过去  目前没有这样的库 先手动
-                                string PdtName = clientsDictionary[ipadreess].PdtName;
-                                string PdtVer = clientsDictionary[ipadreess].pdtVer;
-                                SendFile(ipadreess);
+                                string PdtName = Encoding.Default.GetString(revBuffer, 1, length - 1);
+
+                                if (sendType == SendType.Manual)
+                                    SendFile(ipadreess);
+                                else if (sendType == SendType.Auto)
+                                {
+                                    string FileName = softDic[PdtName]._SoftName;
+                                    AutoSendFile(ipadreess, FileDirPath+"/"+FileName, FileName);
+                                }
                             }                         
                             break;
                         //请求文件夹
@@ -271,7 +279,6 @@ namespace Server
                                     if (clientsDictionary[ipadreess].pdtVer != softDic[clientsDictionary[ipadreess].PdtName]._Version)
                                         SendUpdataInfo(ipadreess, "有最新版本,是否更新");
                                     else
-
                                         SendUpdataInfo(ipadreess, "已是最新版本");
                                 }
                                 catch (Exception ex)
@@ -317,6 +324,20 @@ namespace Server
             }
         }
 
+        //让客户端退出
+        public void SendExit(string ipaddress)
+        {
+            try
+            {
+                string msg = "E" + "请退出";
+                clientsDictionary[ipaddress].clientSocket.Send(Encoding.Default.GetBytes(msg));
+            }
+            catch (Exception ex)
+            {
+                info.Enqueue(ex.Message);
+            }
+        }
+
         //发送文件夹名
         public override void SendDirectoryInfo(string ipaddress,string DirectoryName)
         {
@@ -336,6 +357,11 @@ namespace Server
         {
             FolderBrowserDialog fd = new FolderBrowserDialog();
             fd.ShowDialog();
+            if (fd.SelectedPath == "")
+            {
+                SendExit(ipaddress);
+                return;
+            }
             ListDirectory(ipaddress,fd.SelectedPath,Path.GetFileName(fd.SelectedPath));
         }
 
@@ -433,85 +459,11 @@ namespace Server
             //文件信息
             FileInfo fileinfo = new FileInfo();
 
-                 //读取文件
-                if (!MyFile.GetFileData(ref fileinfo.FileName, ref fileinfo.FilePath, ref fileinfo.Size, ref fileinfo.buffer))
-                {
-                    info.Enqueue("文件读取失败");
-                    return;
-                }
-
-                DataBlock = SendPreData(ipaddress, fileinfo.FileName, fileinfo.Size);
-
-                //算上头消息的应答
-                DataBlock++;
-
-                //发送数据块
-                while (DataBlock != 0)
-                {
-                    //清空缓存
-                    revBuffer = new byte[512];
-                    //等待应答
-                    len = clientsDictionary[ipaddress].clientSocket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
-                    //防止速度太快
-                    Thread.Sleep(5);
-                    if (len <= 0)
-                    {
-                        info.Enqueue("客户端 " + ipaddress + " 退出");
-                        return;
-                    }
-                    if (revBuffer[0] == 1)
-                    {
-                        //应答成功了代码块-1;
-                        DataBlock--;
-                        if (DataBlock > 0)
-                        {
-                            //当数据块>=设定值的时候
-                            if (fileinfo.Size >= SendLength)
-                            {
-                                SendData(ipaddress, fileinfo.buffer, SendBufferLength, ref number, ref fileinfo.Size);
-                            }
-                            //当数据块<设定值的时候
-                            else
-                            {
-                                SendData(ipaddress, fileinfo.buffer, fileinfo.Size + DataByte, ref number, ref fileinfo.Size);
-                            }
-                        }
-                    }
-                    //应答失败 再次发送数据
-                    else
-                    {
-                        len = clientsDictionary[ipaddress].clientSocket.Send(sendBuffer);
-                        info.Enqueue(string.Format("发送失败,再次发送数据"));
-                    }
-                }
-                info.Enqueue(string.Format("发送完成"));
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw new Exception(ex.Message);
-            //}
-        }
-
-        //发送自动发送文件
-        public override void AutoSendFile(string ipaddress,string FilefullName,string Name)
-        {
-            //发送的字节块
-            int DataBlock = 0;
-            //接收ACK缓存
-            byte[] revBuffer = new byte[512];
-            //发送数据缓存
-            byte[] sendBuffer = new byte[SendLength];
-            //设定一个跟踪标识
-            int number = 0;
-            //函数返回值
-            int len;
-            //文件信息
-            FileInfo fileinfo = new FileInfo();
-
-            //读取文件
-            if (!MyFile.GetFileData(ref fileinfo.FileName, ref fileinfo.FilePath, ref fileinfo.Size, ref fileinfo.buffer, FilefullName,Name))
+                //读取文件
+            if (!MyFile.GetFileData(ref fileinfo.FileName, ref fileinfo.FilePath, ref fileinfo.Size, ref fileinfo.buffer))
             {
                 info.Enqueue("文件读取失败");
+                SendExit(ipaddress);
                 return;
             }
 
@@ -560,6 +512,78 @@ namespace Server
                 }
             }
             info.Enqueue(string.Format("发送完成"));
+        }
+
+        //发送自动发送文件
+        public override void AutoSendFile(string ipaddress,string FilefullName,string Name)
+        {
+            //发送的字节块
+            int DataBlock = 0;
+            //接收ACK缓存
+            byte[] revBuffer = new byte[512];
+            //发送数据缓存
+            byte[] sendBuffer = new byte[SendLength];
+            //设定一个跟踪标识
+            int number = 0;
+            //函数返回值
+            int len;
+            //文件信息
+            FileInfo fileinfo = new FileInfo();
+
+            //读取文件
+            if (!MyFile.GetFileData(ref fileinfo.FileName, ref fileinfo.FilePath, ref fileinfo.Size, ref fileinfo.buffer, FilefullName,Name))
+            {
+                info.Enqueue("文件读取失败");
+                SendExit(ipaddress);
+                return;
+            }
+
+            DataBlock = SendPreData(ipaddress, fileinfo.FileName, fileinfo.Size);
+
+            //算上头消息的应答
+            DataBlock++;
+
+            //发送数据块
+            while (DataBlock != 0)
+            {
+                //清空缓存
+                revBuffer = new byte[512];
+                //等待应答
+                len = clientsDictionary[ipaddress].clientSocket.Receive(revBuffer, revBuffer.Length, SocketFlags.None);
+                //防止速度太快
+                Thread.Sleep(5);
+                if (len <= 0)
+                {
+                    info.Enqueue("客户端 " + ipaddress + " 退出");
+                    return;
+                }
+                if (revBuffer[0] == 1)
+                {
+                    //应答成功了代码块-1;
+                    DataBlock--;
+                    if (DataBlock > 0)
+                    {
+                        //当数据块>=设定值的时候
+                        if (fileinfo.Size >= SendLength)
+                        {
+                            SendData(ipaddress, fileinfo.buffer, SendBufferLength, ref number, ref fileinfo.Size);
+                        }
+                        //当数据块<设定值的时候
+                        else
+                        {
+                            SendData(ipaddress, fileinfo.buffer, fileinfo.Size + DataByte, ref number, ref fileinfo.Size);
+                        }
+                    }
+                }
+                //应答失败 再次发送数据
+                else
+                {
+                    len = clientsDictionary[ipaddress].clientSocket.Send(sendBuffer);
+                    info.Enqueue(string.Format("发送失败,再次发送数据"));
+                }
+            }
+            
+            info.Enqueue(string.Format("{0}发送完成",fileinfo.FileName));
         }
     }
 
@@ -610,11 +634,16 @@ namespace Server
         public FileType fileType = FileType.File;
         //线程管理
         public Dictionary<Socket, Thread> threadDic;
-
+        //上位机名称
+        public string PdtName = null;
+        //上位机版本
+        public string PdtVersion = null;
         //public event Action ChangeHandle;
 
-        public TCPClient()
+        public TCPClient(string pdtName,string pdtVersion)
         {
+            this.PdtName = pdtName;
+            this.PdtVersion = pdtVersion;
             info = new Queue<string>();
             //Main_tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
             threadDic = new Dictionary<Socket, Thread>();
@@ -645,6 +674,11 @@ namespace Server
     /// </summary>
     public class TestClient : TCPClient
     {
+        public TestClient(string pdtName, string pdtVersion):base(pdtName, pdtVersion)
+        {
+
+        }
+
         //连接
         public override bool Connect(ref Socket tcpClient,string ip, int port)
         {
@@ -721,7 +755,7 @@ namespace Server
             Socket socket = null;
             Connect(ref socket, ServerIPAddress, ServerPort);
             if (fileType == FileType.File)
-                SendReq(socket, "请求下载最新版本软件");
+                SendReq(socket, PdtName);
             else
                 SenDReq(socket, "请求下载文件夹");
         }
@@ -768,17 +802,10 @@ namespace Server
                                         RevcFile();
                                         
                                     }
-                                    else
-                                    {
-                                        //tcpClient.Close();
-                                        //return;
-                                    }
                                 }
                                 else
                                 {
                                     MessageBox.Show("已是最新版本，无需更新","更新提示");
-                                    //tcpClient.Close()
-                                    //return;
                                 }
                             }
                             break;
@@ -794,15 +821,14 @@ namespace Server
                         //Exit
                         case "E":
                             tcpClient.Close();
-                            //这里应该再销毁线程
-                            break;
+                            return;
                         //File
                         case "F":
                             {
                                 int len = 0;
                                 int DataBlock = 0;
                                 string pathName = Encoding.Default.GetString(revBuffer, PreDataByte, length - PreDataByte);
-                                info.Enqueue(pathName);
+                                //info.Enqueue(pathName);
                                 //如果文件已存在，删掉
                                 if (File.Exists(pathName))
                                     File.Delete(pathName);
@@ -814,7 +840,7 @@ namespace Server
 
                                 //发送1请求数据开始传送
                                 tcpClient.Send(new byte[1] { (byte)1 });
-                                info.Enqueue("发送应答1");
+                                //info.Enqueue("发送应答1");
 
                                 while (DataBlock != 0)
                                 {
@@ -847,7 +873,7 @@ namespace Server
                                         info.Enqueue(string.Format(string.Format("接收代码块失败:{0}", DataBlock)));
                                     }
                                 }
-                                info.Enqueue("接收成功");
+                                info.Enqueue(pathName+"接收成功");
                                 fswrite.Close();
                                 break;
                             }

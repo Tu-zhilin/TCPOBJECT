@@ -43,7 +43,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ClientIPendPort = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.pdtSoftname = new System.Windows.Forms.TextBox();
             this.SoftVersion = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ProductName = new System.Windows.Forms.TextBox();
@@ -52,6 +54,8 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.softName = new System.Windows.Forms.TextBox();
             this.Dele = new System.Windows.Forms.Button();
             this.Change = new System.Windows.Forms.Button();
             this.Add = new System.Windows.Forms.Button();
@@ -60,19 +64,24 @@
             this.pdtVer = new System.Windows.Forms.TextBox();
             this.pdtName = new System.Windows.Forms.TextBox();
             this.Load = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.softName = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.pdtSoftname = new System.Windows.Forms.TextBox();
+            this.Manual = new System.Windows.Forms.RadioButton();
+            this.Auto = new System.Windows.Forms.RadioButton();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // SendText
             // 
-            this.SendText.Location = new System.Drawing.Point(482, 549);
+            this.SendText.Location = new System.Drawing.Point(536, 73);
             this.SendText.Name = "SendText";
             this.SendText.Size = new System.Drawing.Size(75, 23);
             this.SendText.TabIndex = 0;
@@ -83,7 +92,7 @@
             // SendFile
             // 
             this.SendFile.Enabled = false;
-            this.SendFile.Location = new System.Drawing.Point(574, 549);
+            this.SendFile.Location = new System.Drawing.Point(668, 73);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
             this.SendFile.TabIndex = 1;
@@ -137,7 +146,7 @@
             this.xxxxx.Controls.Add(this.ClientPdtType);
             this.xxxxx.Controls.Add(this.label1);
             this.xxxxx.Controls.Add(this.ClientIPendPort);
-            this.xxxxx.Location = new System.Drawing.Point(789, 114);
+            this.xxxxx.Location = new System.Drawing.Point(789, 130);
             this.xxxxx.Name = "xxxxx";
             this.xxxxx.Size = new System.Drawing.Size(221, 141);
             this.xxxxx.TabIndex = 6;
@@ -203,12 +212,21 @@
             this.groupBox2.Controls.Add(this.SoftVersion);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.ProductName);
-            this.groupBox2.Location = new System.Drawing.Point(789, 261);
+            this.groupBox2.Location = new System.Drawing.Point(789, 298);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(221, 118);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "软件信息";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 94);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 12);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "软件名称";
             // 
             // label5
             // 
@@ -218,6 +236,14 @@
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 7;
             this.label5.Text = "软件版本";
+            // 
+            // pdtSoftname
+            // 
+            this.pdtSoftname.Location = new System.Drawing.Point(68, 90);
+            this.pdtSoftname.Name = "pdtSoftname";
+            this.pdtSoftname.ReadOnly = true;
+            this.pdtSoftname.Size = new System.Drawing.Size(146, 21);
+            this.pdtSoftname.TabIndex = 16;
             // 
             // SoftVersion
             // 
@@ -246,15 +272,15 @@
             // 
             // SendWord
             // 
-            this.SendWord.Location = new System.Drawing.Point(67, 549);
+            this.SendWord.Location = new System.Drawing.Point(95, 73);
             this.SendWord.Name = "SendWord";
-            this.SendWord.Size = new System.Drawing.Size(406, 21);
+            this.SendWord.Size = new System.Drawing.Size(425, 21);
             this.SendWord.TabIndex = 3;
             this.SendWord.Text = "向客户端发送一条信息";
             // 
             // TestWindow
             // 
-            this.TestWindow.Location = new System.Drawing.Point(670, 549);
+            this.TestWindow.Location = new System.Drawing.Point(246, 20);
             this.TestWindow.Name = "TestWindow";
             this.TestWindow.Size = new System.Drawing.Size(75, 23);
             this.TestWindow.TabIndex = 2;
@@ -269,7 +295,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(1016, 20);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(447, 568);
+            this.listBox1.Size = new System.Drawing.Size(336, 508);
             this.listBox1.TabIndex = 9;
             // 
             // timer1
@@ -289,16 +315,32 @@
             this.groupBox4.Controls.Add(this.pdtVer);
             this.groupBox4.Controls.Add(this.pdtName);
             this.groupBox4.Controls.Add(this.Load);
-            this.groupBox4.Location = new System.Drawing.Point(789, 385);
+            this.groupBox4.Location = new System.Drawing.Point(789, 437);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(221, 203);
+            this.groupBox4.Size = new System.Drawing.Size(221, 204);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "XML操作";
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 97);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "软件名称";
+            // 
+            // softName
+            // 
+            this.softName.Location = new System.Drawing.Point(21, 113);
+            this.softName.Name = "softName";
+            this.softName.Size = new System.Drawing.Size(188, 21);
+            this.softName.TabIndex = 14;
+            // 
             // Dele
             // 
-            this.Dele.Location = new System.Drawing.Point(22, 140);
+            this.Dele.Location = new System.Drawing.Point(22, 143);
             this.Dele.Name = "Dele";
             this.Dele.Size = new System.Drawing.Size(75, 23);
             this.Dele.TabIndex = 12;
@@ -308,7 +350,7 @@
             // 
             // Change
             // 
-            this.Change.Location = new System.Drawing.Point(135, 140);
+            this.Change.Location = new System.Drawing.Point(135, 143);
             this.Change.Name = "Change";
             this.Change.Size = new System.Drawing.Size(75, 23);
             this.Change.TabIndex = 11;
@@ -368,50 +410,93 @@
             this.Load.UseVisualStyleBackColor = true;
             this.Load.Click += new System.EventHandler(this.Load_Click);
             // 
-            // label8
+            // Manual
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(7, 97);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 13;
-            this.label8.Text = "软件名称";
+            this.Manual.AutoSize = true;
+            this.Manual.Checked = true;
+            this.Manual.Location = new System.Drawing.Point(639, 29);
+            this.Manual.Name = "Manual";
+            this.Manual.Size = new System.Drawing.Size(47, 16);
+            this.Manual.TabIndex = 11;
+            this.Manual.TabStop = true;
+            this.Manual.Text = "手动";
+            this.Manual.UseVisualStyleBackColor = true;
+            this.Manual.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
-            // softName
+            // Auto
             // 
-            this.softName.Location = new System.Drawing.Point(21, 113);
-            this.softName.Name = "softName";
-            this.softName.Size = new System.Drawing.Size(188, 21);
-            this.softName.TabIndex = 14;
+            this.Auto.AutoSize = true;
+            this.Auto.Location = new System.Drawing.Point(692, 29);
+            this.Auto.Name = "Auto";
+            this.Auto.Size = new System.Drawing.Size(47, 16);
+            this.Auto.TabIndex = 12;
+            this.Auto.Text = "自动";
+            this.Auto.UseVisualStyleBackColor = true;
+            this.Auto.CheckedChanged += new System.EventHandler(this.CheckedChanged);
             // 
-            // label9
+            // groupBox3
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 94);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 12);
-            this.label9.TabIndex = 15;
-            this.label9.Text = "软件名称";
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.SendFile);
+            this.groupBox3.Controls.Add(this.Auto);
+            this.groupBox3.Controls.Add(this.SendText);
+            this.groupBox3.Controls.Add(this.Manual);
+            this.groupBox3.Controls.Add(this.SendWord);
+            this.groupBox3.Location = new System.Drawing.Point(12, 525);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(763, 116);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "发送操作";
             // 
-            // pdtSoftname
+            // textBox1
             // 
-            this.pdtSoftname.Location = new System.Drawing.Point(68, 90);
-            this.pdtSoftname.Name = "pdtSoftname";
-            this.pdtSoftname.ReadOnly = true;
-            this.pdtSoftname.Size = new System.Drawing.Size(146, 21);
-            this.pdtSoftname.TabIndex = 16;
+            this.textBox1.Location = new System.Drawing.Point(95, 27);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(425, 21);
+            this.textBox1.TabIndex = 13;
+            this.textBox1.Text = "Lab";
+            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(558, 30);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(77, 12);
+            this.label10.TabIndex = 14;
+            this.label10.Text = "请求回应方式";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(25, 30);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "文件库地址";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.TestWindow);
+            this.groupBox5.Location = new System.Drawing.Point(1016, 541);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(336, 100);
+            this.groupBox5.TabIndex = 14;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "测试";
             // 
             // Server
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1364, 604);
-            this.Controls.Add(this.SendWord);
+            this.ClientSize = new System.Drawing.Size(1364, 653);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.TestWindow);
             this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.SendFile);
-            this.Controls.Add(this.SendText);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.xxxxx);
             this.Controls.Add(this.groupBox1);
@@ -425,8 +510,10 @@
             this.groupBox2.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -467,5 +554,12 @@
         private System.Windows.Forms.TextBox softName;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox pdtSoftname;
+        private System.Windows.Forms.RadioButton Manual;
+        private System.Windows.Forms.RadioButton Auto;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }

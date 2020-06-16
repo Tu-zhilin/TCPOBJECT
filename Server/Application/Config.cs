@@ -10,7 +10,7 @@ namespace Server
 {
     public class Config
     {
-        public class Data
+        public class Data 
         {
             public string _Name;
             public string _Version;

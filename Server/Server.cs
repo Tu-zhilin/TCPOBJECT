@@ -168,5 +168,18 @@ namespace Server
                 pdt.server.softDic.Remove(ProductName.Text);
             }
         }
+
+        private void CheckedChanged(object sender, EventArgs e)
+        {
+            if (Manual.Checked)
+                pdt.server.sendType = TCPServer.SendType.Manual;
+            else if (Auto.Checked)
+                pdt.server.sendType = TCPServer.SendType.Auto;
+        }
+
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            pdt.server.FileDirPath = textBox1.Text;
+        }
     }
 }

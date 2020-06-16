@@ -48,7 +48,7 @@ namespace Server
                 FileName = openFile.SafeFileName;
             }
 
-            if (FilePath == null)
+            if (FilePath == null || FilePath == "")
                 return false;
             //读取文件
             fsRead = new FileStream(FilePath, FileMode.Open);
@@ -78,8 +78,10 @@ namespace Server
             FilePath = FilefullPath;
             FileName = Name;
             //读取文件
-            if (FilePath == null || FilePath == "")
+            if (FilePath == null || FilePath == "" || !File.Exists(FilePath))
+            {
                 return false;
+            }
             fsRead = new FileStream(FilePath, FileMode.Open);
             //数据长度
             Size = (int)fsRead.Length;

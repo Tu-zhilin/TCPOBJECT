@@ -33,6 +33,8 @@
             this.Sport = new System.Windows.Forms.TextBox();
             this.Sip = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.Directory = new System.Windows.Forms.RadioButton();
+            this.File = new System.Windows.Forms.RadioButton();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -40,8 +42,6 @@
             this.Conn = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.File = new System.Windows.Forms.RadioButton();
-            this.Directory = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +90,28 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "客户端";
+            // 
+            // Directory
+            // 
+            this.Directory.AutoSize = true;
+            this.Directory.Location = new System.Drawing.Point(659, 338);
+            this.Directory.Name = "Directory";
+            this.Directory.Size = new System.Drawing.Size(59, 16);
+            this.Directory.TabIndex = 11;
+            this.Directory.Text = "文件夹";
+            this.Directory.UseVisualStyleBackColor = true;
+            // 
+            // File
+            // 
+            this.File.AutoSize = true;
+            this.File.Checked = true;
+            this.File.Location = new System.Drawing.Point(659, 307);
+            this.File.Name = "File";
+            this.File.Size = new System.Drawing.Size(47, 16);
+            this.File.TabIndex = 10;
+            this.File.TabStop = true;
+            this.File.Text = "文件";
+            this.File.UseVisualStyleBackColor = true;
             // 
             // textBox3
             // 
@@ -147,28 +169,6 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // File
-            // 
-            this.File.AutoSize = true;
-            this.File.Checked = true;
-            this.File.Location = new System.Drawing.Point(659, 307);
-            this.File.Name = "File";
-            this.File.Size = new System.Drawing.Size(47, 16);
-            this.File.TabIndex = 10;
-            this.File.TabStop = true;
-            this.File.Text = "文件";
-            this.File.UseVisualStyleBackColor = true;
-            // 
-            // Directory
-            // 
-            this.Directory.AutoSize = true;
-            this.Directory.Location = new System.Drawing.Point(659, 338);
-            this.Directory.Name = "Directory";
-            this.Directory.Size = new System.Drawing.Size(59, 16);
-            this.Directory.TabIndex = 11;
-            this.Directory.Text = "文件夹";
-            this.Directory.UseVisualStyleBackColor = true;
-            // 
             // Frem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -177,6 +177,7 @@
             this.Controls.Add(this.groupBox2);
             this.Name = "Frem";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Frem_FormClosing);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
