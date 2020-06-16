@@ -78,6 +78,7 @@
             // 
             // SendFile
             // 
+            this.SendFile.Enabled = false;
             this.SendFile.Location = new System.Drawing.Point(574, 549);
             this.SendFile.Name = "SendFile";
             this.SendFile.Size = new System.Drawing.Size(75, 23);
