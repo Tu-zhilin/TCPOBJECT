@@ -63,9 +63,17 @@ namespace Server
         {
             if (pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems.Count > 0)
             {
-                ProductName.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[0].Text;
-                SoftVersion.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[1].Text;
-                pdtSoftname.Text = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[2].Text;
+                string Name = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[0].Text;
+                string Version = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[1].Text;
+                string SoftName = pdt.factor.myTabPage.dictionary[tabControl.SelectedTab.Name].SelectedItems[0].SubItems[2].Text;
+
+                ProductName.Text = Name;
+                SoftVersion.Text = Version;
+                pdtSoftname.Text = SoftName;
+
+                pdtName.Text = Name;
+                pdtVer.Text = Version;
+                softName.Text = SoftName;
             }
         }
 
@@ -124,7 +132,8 @@ namespace Server
         //插入按钮
         private void Add_Click(object sender, EventArgs e)
         {
-
+            if (pdtName.Text == "" && pdtVer.Text == "" && softName.Text == "")
+                return;
             try
             {
                 if (pdt.server.softDic.ContainsKey(pdtName.Text))
@@ -180,6 +189,29 @@ namespace Server
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
             pdt.server.FileDirPath = textBox1.Text;
+        }
+
+        private void Clear_Click(object sender, EventArgs e)
+        {
+            pdtName.Clear();
+            pdtVer.Clear();
+            softName.Clear();
+        }
+
+        private void Count_TextChanged(object sender, EventArgs e)
+        {
+            if (Count.Text == "")
+                return;
+            pdt.server.SendBufferLength = Convert.ToInt32(Count.Text, 16);
+            pdt.client.RecvDataByte = Convert.ToInt32(Count.Text, 16);
+        }
+
+        private void Number_TextChanged(object sender, EventArgs e)
+        {
+            if (Number.Text == "")
+                return;
+            pdt.server.PreDataByte = Convert.ToInt32(Number.Text);
+            pdt.client.PreDataByte = Convert.ToInt32(Number.Text);
         }
     }
 }

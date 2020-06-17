@@ -160,7 +160,7 @@ namespace Template
             SettingListView(listview);
             SetTitle(listview, "产品型号",200);
             SetTitle(listview, "当前版本",200);
-            SetTitle(listview, "软件");
+            SetTitle(listview, "软件",200);
             return listview;
         }
     }

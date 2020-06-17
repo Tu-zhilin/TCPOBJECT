@@ -67,10 +67,15 @@
             this.Manual = new System.Windows.Forms.RadioButton();
             this.Auto = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.Clear = new System.Windows.Forms.Button();
+            this.Count = new System.Windows.Forms.TextBox();
+            this.Number = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.xxxxx.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -280,7 +285,7 @@
             // 
             // TestWindow
             // 
-            this.TestWindow.Location = new System.Drawing.Point(246, 20);
+            this.TestWindow.Location = new System.Drawing.Point(246, 17);
             this.TestWindow.Name = "TestWindow";
             this.TestWindow.Size = new System.Drawing.Size(75, 23);
             this.TestWindow.TabIndex = 2;
@@ -305,6 +310,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.Clear);
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.softName);
             this.groupBox4.Controls.Add(this.Dele);
@@ -340,9 +346,9 @@
             // 
             // Dele
             // 
-            this.Dele.Location = new System.Drawing.Point(22, 143);
+            this.Dele.Location = new System.Drawing.Point(87, 144);
             this.Dele.Name = "Dele";
-            this.Dele.Size = new System.Drawing.Size(75, 23);
+            this.Dele.Size = new System.Drawing.Size(59, 23);
             this.Dele.TabIndex = 12;
             this.Dele.Text = "删除";
             this.Dele.UseVisualStyleBackColor = true;
@@ -350,9 +356,9 @@
             // 
             // Change
             // 
-            this.Change.Location = new System.Drawing.Point(135, 143);
+            this.Change.Location = new System.Drawing.Point(22, 144);
             this.Change.Name = "Change";
-            this.Change.Size = new System.Drawing.Size(75, 23);
+            this.Change.Size = new System.Drawing.Size(59, 23);
             this.Change.TabIndex = 11;
             this.Change.Text = "修改";
             this.Change.UseVisualStyleBackColor = true;
@@ -362,7 +368,7 @@
             // 
             this.Add.Location = new System.Drawing.Point(22, 173);
             this.Add.Name = "Add";
-            this.Add.Size = new System.Drawing.Size(75, 23);
+            this.Add.Size = new System.Drawing.Size(59, 23);
             this.Add.TabIndex = 10;
             this.Add.Text = "添加";
             this.Add.UseVisualStyleBackColor = true;
@@ -402,9 +408,9 @@
             // 
             // Load
             // 
-            this.Load.Location = new System.Drawing.Point(135, 173);
+            this.Load.Location = new System.Drawing.Point(87, 173);
             this.Load.Name = "Load";
-            this.Load.Size = new System.Drawing.Size(75, 23);
+            this.Load.Size = new System.Drawing.Size(59, 23);
             this.Load.TabIndex = 4;
             this.Load.Text = "加载";
             this.Load.UseVisualStyleBackColor = true;
@@ -451,14 +457,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "发送操作";
             // 
-            // textBox1
+            // label11
             // 
-            this.textBox1.Location = new System.Drawing.Point(95, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(425, 21);
-            this.textBox1.TabIndex = 13;
-            this.textBox1.Text = "Lab";
-            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(25, 30);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "文件库地址";
             // 
             // label10
             // 
@@ -469,17 +475,21 @@
             this.label10.TabIndex = 14;
             this.label10.Text = "请求回应方式";
             // 
-            // label11
+            // textBox1
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(25, 30);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 12);
-            this.label11.TabIndex = 15;
-            this.label11.Text = "文件库地址";
+            this.textBox1.Location = new System.Drawing.Point(95, 27);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(425, 21);
+            this.textBox1.TabIndex = 13;
+            this.textBox1.Text = "Lab";
+            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.Number);
+            this.groupBox5.Controls.Add(this.Count);
             this.groupBox5.Controls.Add(this.TestWindow);
             this.groupBox5.Location = new System.Drawing.Point(1016, 541);
             this.groupBox5.Name = "groupBox5";
@@ -487,6 +497,54 @@
             this.groupBox5.TabIndex = 14;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "测试";
+            // 
+            // Clear
+            // 
+            this.Clear.Location = new System.Drawing.Point(152, 144);
+            this.Clear.Name = "Clear";
+            this.Clear.Size = new System.Drawing.Size(59, 23);
+            this.Clear.TabIndex = 15;
+            this.Clear.Text = "清空";
+            this.Clear.UseVisualStyleBackColor = true;
+            this.Clear.Click += new System.EventHandler(this.Clear_Click);
+            // 
+            // Count
+            // 
+            this.Count.Location = new System.Drawing.Point(83, 18);
+            this.Count.Name = "Count";
+            this.Count.ReadOnly = true;
+            this.Count.Size = new System.Drawing.Size(62, 21);
+            this.Count.TabIndex = 3;
+            this.Count.Text = "FFFFFF";
+            this.Count.TextChanged += new System.EventHandler(this.Count_TextChanged);
+            // 
+            // Number
+            // 
+            this.Number.Location = new System.Drawing.Point(83, 47);
+            this.Number.Name = "Number";
+            this.Number.ReadOnly = true;
+            this.Number.Size = new System.Drawing.Size(62, 21);
+            this.Number.TabIndex = 4;
+            this.Number.Text = "4";
+            this.Number.TextChanged += new System.EventHandler(this.Number_TextChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 21);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 12);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "发送字节个数";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 51);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(77, 12);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "发送字节占位";
             // 
             // Server
             // 
@@ -513,6 +571,7 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -561,5 +620,10 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button Clear;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox Number;
+        private System.Windows.Forms.TextBox Count;
     }
 }
