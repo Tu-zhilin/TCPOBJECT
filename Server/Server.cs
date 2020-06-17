@@ -80,7 +80,7 @@ namespace Server
         //测试窗口
         private void TestWindow_Click(object sender, EventArgs e)
         {
-            Form form = new Frem(ServerIp.Text);
+            Form form = new Frem(pdt,ServerIp.Text);
             form.Show();
         }
 
@@ -105,6 +105,10 @@ namespace Server
         //定时器
         private void timer1_Tick(object sender, EventArgs e)
         {
+            //listBox1.Items.Add(pdt.server.PreDataByte);
+            //listBox1.Items.Add(pdt.client.PreDataByte);
+            //listBox1.Items.Add(pdt.client.RecvDataByte);
+            //listBox1.Items.Add(pdt.server.SendBufferLength);
             if (!Flag)
             {
                 Flag = true;

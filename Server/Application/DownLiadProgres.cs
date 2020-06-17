@@ -13,6 +13,7 @@ namespace Server
 
         public DownLoadProgres()
         {
+            //SetUI += Set;
         }
 
         public void Set(object sender, EventArgs e)

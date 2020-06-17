@@ -512,7 +512,6 @@
             // 
             this.Count.Location = new System.Drawing.Point(83, 18);
             this.Count.Name = "Count";
-            this.Count.ReadOnly = true;
             this.Count.Size = new System.Drawing.Size(62, 21);
             this.Count.TabIndex = 3;
             this.Count.Text = "FFFFFF";
@@ -522,7 +521,6 @@
             // 
             this.Number.Location = new System.Drawing.Point(83, 47);
             this.Number.Name = "Number";
-            this.Number.ReadOnly = true;
             this.Number.Size = new System.Drawing.Size(62, 21);
             this.Number.TabIndex = 4;
             this.Number.Text = "4";

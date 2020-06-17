@@ -363,6 +363,8 @@ namespace Server
                 return;
             }
             ListDirectory(ipaddress,fd.SelectedPath,Path.GetFileName(fd.SelectedPath));
+
+            SendExit(ipaddress);
         }
 
         //文件夹遍历
@@ -511,6 +513,7 @@ namespace Server
                     info.Enqueue(string.Format("发送失败,再次发送数据"));
                 }
             }
+            SendExit(ipaddress);
             info.Enqueue(string.Format("发送完成"));
         }
 
@@ -625,7 +628,7 @@ namespace Server
         //表示字节数(F+校验数据字节)
         public int PreDataByte = 4;
         //表示字节数(校验数据字节)
-         public int DataByte { get { return PreDataByte - 1; } }
+        public int DataByte { get { return PreDataByte - 1; } }
         //Server IPaddress
         public string ServerIPAddress = null;
         //Server Port
@@ -641,7 +644,7 @@ namespace Server
         //public event Action ChangeHandle;
 
         public TCPClient(string pdtName,string pdtVersion)
-        {
+        {            
             this.PdtName = pdtName;
             this.PdtVersion = pdtVersion;
             info = new Queue<string>();
@@ -700,6 +703,7 @@ namespace Server
                     tcpClient = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                     tcpClient.Connect(this_ip, port);
                     IpEndPort = tcpClient.RemoteEndPoint.ToString();
+                    //info.Enqueue(PreDataByte.ToString());
                     Thread revThread = new Thread(new ParameterizedThreadStart(Reciving));
                     revThread.IsBackground = true;
                     revThread.TrySetApartmentState(ApartmentState.STA);

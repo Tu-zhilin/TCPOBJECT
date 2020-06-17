@@ -12,13 +12,14 @@ using Server;
 
 namespace Server
 {
-    public partial class Frem : Form
+    partial class Frem : Form
     {
         string sip;
-        Product pdt;
+        public Product pdt;
 
-        public Frem(string sip)
+        public Frem(Product pdt,string sip)
         {
+            this.pdt = pdt;
             this.sip = sip;
             pdt = new Product();
             InitializeComponent();
