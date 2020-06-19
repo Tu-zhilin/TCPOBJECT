@@ -292,7 +292,7 @@ namespace Server
                             info.Enqueue(Encoding.Default.GetString(revBuffer, 1, length));
                             break;
                     }
-                }
+                }//
             }
         }
 
