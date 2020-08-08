@@ -289,7 +289,7 @@ namespace Server
                             break;
                         //Message
                         case "M":
-                            info.Enqueue(Encoding.Default.GetString(revBuffer, 1, length));
+                            info.Enqueue(ipadreess+"发来消息："+Encoding.Default.GetString(revBuffer, 1, length));
                             break;
                     }
                 }//
@@ -710,14 +710,15 @@ namespace Server
                     revThread.Start(tcpClient);
                     threadDic.Add(tcpClient, revThread);
                     info.Enqueue("连接成功");
+                    return true;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message + " 连接失败");
                     return false;
                 }
-                return true;
             }
+            
         }
 
         //发送产品名称和版本
@@ -820,7 +821,7 @@ namespace Server
                             break;
                         //Message
                         case "M":
-                            info.Enqueue(Encoding.Default.GetString(revBuffer, 1, length - 1));
+                            info.Enqueue("服务器消息："+Encoding.Default.GetString(revBuffer, 1, length - 1));
                             break;
                         //Exit
                         case "E":
